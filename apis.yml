@@ -1,0 +1,23 @@
+aid: channelseal
+name: channelseal
+description: 'channelseal is a company surfaced via the API Evangelist harvest backlog (source: manual)
+  and added to the network as a stub for full-pipeline profiling.'
+url: https://raw.githubusercontent.com/api-evangelist/channelseal/refs/heads/main/apis.yml
+x-type: company
+x-source: harvest:manual
+x-tier: stub
+x-tier-reason: harvest
+specificationVersion: '0.20'
+created: '2026-09-20'
+modified: '2026-09-20'
+tags:
+- Company
+apis: []
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
+- FN: APIs.json
+  email: info@apis.io
+common:
+- type: Website
+  url: https://www.channelseal.com/

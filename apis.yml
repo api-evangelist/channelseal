@@ -1,7 +1,11 @@
 aid: channelseal
-name: channelseal
-description: 'channelseal is a company surfaced via the API Evangelist harvest backlog (source: manual)
-  and added to the network as a stub for full-pipeline profiling.'
+name: ChannelSeal
+description: ChannelSeal scores, monitors, and protects the interfaces AI agents reach — APIs, MCP servers
+  and other agents — with an Interface Scorecard per interface (agent usability, governance, risk, compliance,
+  security), sensitive-data-flow identification from schemas and metadata without payload inspection,
+  and inline runtime policy enforcement inside the customer's environment. Invite-only, founding-customer
+  stage in 2026; publishes a Zudoku developer portal with OpenAPI 3.1 documents for its Platform, API
+  Discovery, Data Classification and Catalog APIs.
 url: https://raw.githubusercontent.com/api-evangelist/channelseal/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:manual
@@ -21,3 +25,17 @@ maintainers:
 common:
 - type: Website
   url: https://www.channelseal.com/
+- type: Documentation
+  url: https://docs.channelseal.com/
+- type: Blog
+  url: https://www.channelseal.com/blog/
+- type: BlogRSS
+  url: https://www.channelseal.com/blog/feed.xml
+- type: GitHub
+  url: https://github.com/channelseal
+- type: LinkedIn
+  url: https://www.linkedin.com/company/channelseal
+- type: Privacy
+  url: https://www.channelseal.com/privacy.html
+- type: Contact
+  url: mailto:hello@channelseal.com

@@ -66,3 +66,19 @@
 
 channelseal is a company surfaced via the API Evangelist harvest backlog (source: manual) and added to the network as a stub for full-pipeline profiling.
 - https://www.channelseal.com/
+
+## Discovery notes (2026-09-20, verified by hand before enrichment)
+
+Developer portal https://docs.channelseal.com/ is a Zudoku site; its client bundle references four
+OpenAPI 3.1.0 documents (all HTTP 200, text/yaml, parse cleanly) plus a shared components file:
+
+- https://docs.channelseal.com/platform/0.1.0/schema.yaml — Platform APIs (32 paths / 56 ops; alerts, applications, NHIs, channels, service providers)
+- https://docs.channelseal.com/data-classification/0.1.0/schema.yaml — Data Classification APIs (7 paths / 19 ops)
+- https://docs.channelseal.com/api-discovery/0.1.0/schema.yaml — API Discovery Service API (3 paths / 6 ops)
+- https://docs.channelseal.com/catalog/0.1.0/schema.yaml — API Catalog APIs (3 paths / 3 ops; spec import)
+- https://docs.channelseal.com/components/0.1.0/schema.yaml — shared schemas (23) + `security_auth` securityScheme
+
+Servers: https://api.channelseal.com/platform (prod), uat., staging. — api.channelseal.com root does not answer plain HTTPS.
+Auth + scopes documented at https://docs.channelseal.com/api-reference (#authentication, #available-scopes).
+Not found: robots.txt, sitemap.xml, llms.txt, .well-known/security.txt on www; openapi.json on www and docs.
+GitHub org has one public repo: integrations.

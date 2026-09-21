@@ -1,0 +1,62 @@
+generated: '2026-09-20'
+method: searched
+probe: true
+source: >-
+  Harvested only. Artifacts checked first (well-known/ — no security.txt on any host; security/ — the
+  probe found no trust center and no disclosure program; lifecycle/ — no support period; conformance/),
+  then the conventional paths probed live on www.channelseal.com (/security, /accessibility,
+  /legal/subprocessors, /legal/dpa, /trust, /compliance, /ai, /transparency, /privacy/requests — all
+  404; /terms 404), then the docs site (docs.channelseal.com/api-reference) and the privacy policy
+  (www.channelseal.com/privacy.html, last updated 08/11/2025).
+signals:
+  data_subject_request:
+    url: https://www.channelseal.com/privacy.html
+    section: Your Privacy Rights
+    channel: hello@channelseal.com
+    deletion_channel: privacy@channelseal.com
+    stated_sla: null
+    evidence:
+    - source: https://www.channelseal.com/privacy.html
+      http_status: 200
+      fetched: '2026-09-20'
+      quote: >-
+        "Depending on your location, you may have the right to: Access the personal data we hold about
+        you. Request corrections to inaccurate data. Request deletion of your personal data. Object to or
+        restrict certain processing activities. Receive your data in a portable format. To exercise these
+        rights, contact us at hello@channelseal.com."
+    - source: https://docs.channelseal.com/api-reference#gdpr-compliance
+      http_status: 200
+      fetched: '2026-09-20'
+      quote: '"ChannelSeal is GDPR compliant. For data deletion requests, contact privacy@channelseal.com."'
+    note: >-
+      A published rights statement with a named contact channel, no form, no API and no response window.
+      The same policy states "We store personal data on secure servers located in [Country/Region]" — an
+      unfilled template placeholder — so no data_residency signal is recorded, and it states "We do not
+      sell your personal data" without any Global Privacy Control commitment, so no global_privacy_control
+      signal is recorded.
+absent:
+  sbom: no /security/sbom, no security.txt, no GitHub release artifacts (org publishes one docs-only repo)
+  support_lifetime: no versioning or support-period statement (lifecycle/channelseal-lifecycle.yml)
+  accessibility_conformance: /accessibility 404; no VPAT
+  training_data_summary: none
+  ai_transparency: none (the product governs AI agents but publishes no AI-use disclosure of its own)
+  global_privacy_control: no published statement
+  subprocessors: /legal/subprocessors 404; privacy policy names categories only ("Payment processors, cloud hosting providers, analytics services, customer support platforms")
+  data_residency: placeholder "[Country/Region]" in the privacy policy; none stated
+  incident_notification: no DPA published (/legal/dpa 404)
+  age_assurance: none
+  notice_and_action: none
+  transparency_report: none
+  exit_assistance: portability is listed as a right (privacy policy) but no export tooling or switching guidance is documented
+evidence:
+- {url: https://www.channelseal.com/security, status: 404}
+- {url: https://www.channelseal.com/accessibility, status: 404}
+- {url: https://www.channelseal.com/legal/subprocessors, status: 404}
+- {url: https://www.channelseal.com/legal/dpa, status: 404}
+- {url: https://www.channelseal.com/trust, status: 404}
+- {url: https://www.channelseal.com/compliance, status: 404}
+- {url: https://www.channelseal.com/ai, status: 404}
+- {url: https://www.channelseal.com/transparency, status: 404}
+- {url: https://www.channelseal.com/privacy/requests, status: 404}
+- {url: https://www.channelseal.com/terms, status: 404}
+- {url: https://www.channelseal.com/privacy.html, status: 200}

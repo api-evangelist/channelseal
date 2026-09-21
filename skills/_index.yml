@@ -1,0 +1,57 @@
+generated: '2026-09-20'
+method: searched
+source: >-
+  https://docs.channelseal.com/agent-skills (served as markdown at /agent-skills.md) plus the portal's
+  route table. ChannelSeal PUBLISHES its own Agent Skills — 18 SKILL.md files (13 resource skills, 5
+  process skills) following the agentskills.io specification, installed by copying each skill page's
+  markdown into the agent's skills folder with CHANNELSEAL_BASE_URL and CHANNELSEAL_TOKEN set. The skill
+  pages themselves are protectedRoutes (/skills/*) behind portal sign-in on the Auth0 tenant, so their
+  bodies are NOT reproduced here; only the public introduction page and each skill's name/description
+  frontmatter (which the portal exposes for skill selection) are recorded. The provider says it "would
+  expose these and more skills in a github repository in future". The three files listed under
+  generated_skills are API Evangelist-authored, grounded in operationIds verified in openapi/*.yml.
+docs: https://docs.channelseal.com/agent-skills
+provider_skills:
+  gated: true
+  gate: portal sign-in (Zudoku authentication → dev-channelseal.us.auth0.com); route pattern /skills/*
+  install: https://docs.channelseal.com/agent-skills#installation
+  env: [CHANNELSEAL_BASE_URL, CHANNELSEAL_TOKEN]
+  bins: [curl, jq]
+  last_modified: '2026-07-21'
+  resource_skills:
+  - {name: channelseal-apis, url: https://docs.channelseal.com/skills/resource-skills/apis/SKILL, description: Manage ChannelSeal API registry entries — list, search, get, create, update, delete APIs.}
+  - {name: channelseal-classifications, url: https://docs.channelseal.com/skills/resource-skills/classifications/SKILL, description: Manage Classifications (sensitivity levels within a scheme).}
+  - {name: channelseal-dashboard, url: https://docs.channelseal.com/skills/resource-skills/dashboard/SKILL, description: Query discovery metrics for the portal dashboard over a time range.}
+  - {name: channelseal-applications, url: https://docs.channelseal.com/skills/resource-skills/applications/SKILL, description: Manage Applications and list their Non-Human Identities.}
+  - {name: channelseal-audit-events, url: https://docs.channelseal.com/skills/resource-skills/audit-events/SKILL, description: List, search and get CloudEvent-based audit events.}
+  - {name: channelseal-monitor, url: https://docs.channelseal.com/skills/resource-skills/monitor/SKILL, description: Monitor platform health and metrics via Spring Boot Actuator.}
+  - {name: channelseal-sensitive-data-elements, url: https://docs.channelseal.com/skills/resource-skills/sensitive-data-elements/SKILL, description: Manage Sensitive Data Elements (SDEs) found at URI/PATH/QUERY/HEADER/BODY locations on channels.}
+  - {name: channelseal-alerts, url: https://docs.channelseal.com/skills/resource-skills/alerts/SKILL, description: Manage Alerts — severity INFO…CRITICAL and lifecycle statuses.}
+  - {name: channelseal-sensitive-info-types, url: https://docs.channelseal.com/skills/resource-skills/sensitive-info-types/SKILL, description: Manage Sensitive Info Types (email, SSN, credit card…) with pattern rules, jurisdiction, risk, classification.}
+  - {name: channelseal-sensitive-info-groups, url: https://docs.channelseal.com/skills/resource-skills/sensitive-info-groups/SKILL, description: Manage Sensitive Info Groups (PII, Financial, Health).}
+  - {name: channelseal-non-human-identities, url: https://docs.channelseal.com/skills/resource-skills/non-human-identities/SKILL, description: Manage NHIs (API keys, client IDs, service accounts, X.509 fingerprints) and their application associations.}
+  - {name: channelseal-channels, url: https://docs.channelseal.com/skills/resource-skills/channels/SKILL, description: Manage Channels (HTTP paths, Kafka topics, queues) and list the NHIs using a channel.}
+  - {name: channelseal-service-providers-or-services, url: https://docs.channelseal.com/skills/resource-skills/introduction, description: A thirteenth resource skill exists in the route table (skills/resource-skills/*); its frontmatter was not exposed publicly, so it is listed by section only.}
+  process_skills:
+  - {name: discover-sensitive-data, url: https://docs.channelseal.com/skills/process-skills/discover-sensitive-data/SKILL}
+  - {name: onboard-application, url: https://docs.channelseal.com/skills/process-skills/onboard-application/SKILL}
+  - {name: investigate-alert, url: https://docs.channelseal.com/skills/process-skills/investigate-alert/SKILL}
+  - {name: audit-nhi, url: https://docs.channelseal.com/skills/process-skills/audit-nhi/SKILL}
+  - {name: review-data-posture, url: https://docs.channelseal.com/skills/process-skills/review-data-posture/SKILL}
+  - {name: compliance-report, url: https://docs.channelseal.com/skills/process-skills/compliance-report/SKILL}
+skills:
+- file: channelseal-import-and-inventory-apis.md
+  name: Import an API specification and inventory what it exposes
+  api: openapi/channelseal-api-catalog-api-openapi.yml
+  operations: [importSpec, searchApis, getApiById, searchChannels, getChannelById]
+  method: generated
+- file: channelseal-find-sensitive-data-flows.md
+  name: Find where sensitive data flows and which identities carry it
+  api: openapi/channelseal-platform-api-openapi.yml
+  operations: [searchSensitiveDataElements, getSensitiveDataElementById, getChannelById, getNonHumanIdentities_1, getApplications_1]
+  method: generated
+- file: channelseal-triage-alerts.md
+  name: Triage open alerts and move them through their lifecycle
+  api: openapi/channelseal-platform-api-openapi.yml
+  operations: [getAlerts, getAlertById, getApplicationById, getChannelById, updateAlert]
+  method: generated

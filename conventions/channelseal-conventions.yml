@@ -1,0 +1,123 @@
+generated: '2026-09-20'
+method: searched
+source: >-
+  docs.channelseal.com/api-reference (authentication, rate limiting, error handling, common parameters —
+  pagination/filtering/sorting, data security) cross-checked against the shared components document
+  openapi/channelseal-api-schemas-openapi.yml (Pageable, PagedModel, PageMetadata, Metadata, ProblemDetail)
+  and the operation shapes in the four API specs.
+description: >-
+  How ChannelSeal's REST APIs behave across every operation: bearer OAuth2 client-credentials auth, Spring
+  Data offset pagination with a content/page envelope, query-parameter filtering plus a free-text search
+  parameter on list operations, RFC 9457 problem+json errors, X-RateLimit-* signalling, and a hard-delete
+  write surface with no idempotency key, no dry-run and no reversal path.
+base_url: https://{env}.channelseal.com/{capability} — env api (production) or uat; capability platform or catalog
+api_style: REST over HTTPS, JSON requests and responses (Spring Boot)
+
+authentication:
+  scheme: OAuth 2.0 client credentials → Bearer access token (1 hour)
+  token_endpoint: https://dev-channelseal.us.auth0.com/oauth/token
+  audience: https://api.channelseal.com
+  docs: https://docs.channelseal.com/api-reference#authentication
+  detail: authentication/channelseal-authentication.yml
+  scopes: scopes/channelseal-scopes.yml
+
+idempotency:
+  supported: false
+  coverage: none
+  mechanism: null
+  applies_to: >-
+    Nothing beyond HTTP method semantics — PUT updates replace the resource and are naturally idempotent;
+    the POST create operations (createApplication, create [NHI], createInfoType, createInfoGroup,
+    createClassification, importSpec, addApplication) carry no idempotency key, and no replay-detection or
+    duplicate-suppression behaviour is documented.
+  docs: null
+
+pagination:
+  style: offset
+  request_params:
+    docs: number (page number, default 1), size (default 20, max 100), sortBy (default updatedAt), sortOrder (ASC|DESC, default DESC)
+    spec: pageable object — page (int32), size (int32), sort (string[]); declared as a single required query parameter named pageable on every list operation
+    note: The docs and the spec name the page-number parameter differently (number vs page) and the sort parameters differently (sortBy/sortOrder vs sort[]); the spec is the Spring Data Pageable shape.
+  response_fields:
+    content: array of results
+    page.size: page size
+    page.number: page number
+    page.totalElements: total items
+    page.totalPages: total pages
+  docs: https://docs.channelseal.com/api-reference#pagination
+
+filtering:
+  supported: true
+  mechanism: >-
+    Resource-specific query parameters on list operations (e.g. getAlerts: severity, id, timestamp;
+    getAllChannels: protocol, method, type) plus a free-text `search` query parameter on most list
+    operations and dedicated /search sub-resources (searchApis, searchChannels, searchServiceProviders,
+    searchSensitiveDataElements, searchSensitiveInfoTypes, searchAuditEvents, getNonHumanIdentities).
+  docs: https://docs.channelseal.com/api-reference#filtering
+
+sorting:
+  mechanism: sortBy + sortOrder query parameters (docs) / pageable.sort[] (spec)
+  docs: https://docs.channelseal.com/api-reference#sorting
+
+field_expansion:
+  supported: false
+  note: Related objects are embedded (Channel.service, Channel.api, NonHumanIdentity.serviceProvider) or referenced by *AltId UUID fields; no expand/fields parameter.
+
+metadata:
+  supported: false
+  note: >-
+    No user-defined metadata map. Every resource carries a system Metadata object (tenantId, altId uuid,
+    createdAt, updatedAt, createdBy, updatedBy) — altId is the public identifier used in {id} paths and in
+    cross-references (channelAltId, applicationAltId, serviceProviderAltId, teamAltId).
+
+multi_tenancy:
+  mechanism: tenantId on every resource's metadata; CS-Org-Id header on the OTLP telemetry ingest (integrations repo)
+
+request_tracing:
+  request_id_header: null
+  description: No request-id header is documented; 500 problem responses carry a trace_id extension member to quote to support.
+
+versioning:
+  scheme: uri-path (/api/v1, /v1) beneath a per-capability base
+  current: v1
+  detail: lifecycle/channelseal-lifecycle.yml
+  changelog: changelog/channelseal-changelog.yml
+
+error_envelope:
+  media_type: application/problem+json
+  format: rfc9457
+  shape: '{ "type": uri, "title": string, "status": integer, "detail": string, "instance": uri, "errors"?: [...], "retry_after"?: int, "trace_id"?: uuid }'
+  type_uri_scheme: https://api.channelseal.com/problems/{slug}
+  detail: errors/channelseal-problem-types.yml
+  docs: https://docs.channelseal.com/api-reference#error-handling
+
+rate_limit_signaling:
+  headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After]
+  status_on_exhaustion: 429
+  detail: rate-limits/channelseal-rate-limits.yml
+
+dry_run_mode:
+  supported: false
+  note: No dry-run, validate-only or preview flag on any operation; the UAT environment is the only rehearsal surface (sandbox/channelseal-sandbox.yml).
+
+reversibility:
+  grade: none
+  summary: >-
+    No reversal operation exists for any write. Deletes are hard deletes with no restore, undo or
+    soft-delete status; every collection also exposes a bulk "delete all" operation with no confirmation
+    parameter and no recovery path. Alerts can be moved through a status lifecycle but not un-deleted.
+  write_surfaces:
+  - surface: delete-by-id (deleteApi, deleteService, deleteServiceProvider, deleteSensitiveDataElementById, deleteChannel, deleteApplication, deleteAlert, deleteAuditEvent, deleteInfoType, deleteInfoGroup, deleteClassification, removeApplication)
+    reversal: none
+    window: null
+  - surface: delete-all (deleteAllApis, deleteAllServices, deleteAllServiceProviders, deleteAllSensitiveDataElements, deleteAllChannels, deleteAllAuditEvents, deleteAllApplications, deleteAlerts, deleteInfoTypes, deleteInfoGroups, deleteAllClassifications)
+    reversal: none
+    window: null
+    note: Highest-consequence operations on the surface — an agent holding the delete scope can empty a tenant's inventory in eleven calls with no documented recovery.
+  - surface: create / update (createApplication, create, addApplication, createInfoType, createInfoGroup, createClassification, importSpec, update*)
+    reversal: compensating delete or a further PUT only; no documented undo
+    window: null
+  - surface: alert status transitions (updateAlert — UNRESOLVED, PROCESSING, ACKNOWLEDGED, ESCALATED, RESOLVED, CLOSED)
+    reversal: a further PUT to an earlier status is possible in the schema but no state machine or reopen rule is documented
+    window: null
+  docs: null

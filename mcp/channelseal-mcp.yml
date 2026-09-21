@@ -1,0 +1,617 @@
+generated: '2026-09-20'
+method: derived
+status: candidate
+source: derived one tool per operationId from openapi/*.yml; no MCP server is published by ChannelSeal (docs.channelseal.com,
+  github.com/channelseal, npm, PyPI and mcp.channelseal.com DNS all searched 2026-09-20)
+description: ChannelSeal ships no MCP server. Its agent surface is a set of 18 provider-authored Agent Skills (skills/_index.yml)
+  that instruct an agent to call these REST operations with curl, which the provider explicitly contrasts with MCP
+  tools ("An agent uses skills to teach itself how to use tools ... rather than calling a pre-built tool"). This
+  manifest is a DERIVED candidate tool list — one tool per operationId — for anyone wrapping the API; nothing here
+  is reachable today.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: oauth
+  auth_note: any wrapper would need an OAuth2 client-credentials bearer token from https://dev-channelseal.us.auth0.com/oauth/token
+    (authentication/channelseal-authentication.yml)
+  verified: derived
+server:
+  name: channelseal
+  transport: null
+  url: null
+tool_count: 84
+readonly_tools: 43
+destructive_tools: 23
+safety_note: 11 of the derived tools are bulk delete-all operations with no reversal (conventions/channelseal-conventions.yml#reversibility);
+  a wrapper should exclude or gate them.
+tools:
+- name: get_service_by_id
+  description: Get service
+  category: Service
+  method: GET
+  path: /api/v1/services/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getServiceById
+  readonly: true
+- name: update_service
+  description: Update service
+  category: Service
+  method: PUT
+  path: /api/v1/services/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#updateService
+  readonly: false
+- name: delete_service
+  description: Delete service
+  category: Service
+  method: DELETE
+  path: /api/v1/services/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#deleteService
+  readonly: false
+- name: get_service_provider_by_id
+  description: Get service provider
+  category: Service Provider
+  method: GET
+  path: /api/v1/serviceproviders/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getServiceProviderById
+  readonly: true
+- name: update_service_provider
+  description: Update service provider
+  category: Service Provider
+  method: PUT
+  path: /api/v1/serviceproviders/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#updateServiceProvider
+  readonly: false
+- name: delete_service_provider
+  description: Delete service provider
+  category: Service Provider
+  method: DELETE
+  path: /api/v1/serviceproviders/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#deleteServiceProvider
+  readonly: false
+- name: get_sensitive_data_element_by_id
+  description: Get sensitive data element
+  category: Sensitive Data Element
+  method: GET
+  path: /api/v1/sensitive-data-elements/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getSensitiveDataElementById
+  readonly: true
+- name: update_sensitive_data_element
+  description: Update sensitive data element
+  category: Sensitive Data Element
+  method: PUT
+  path: /api/v1/sensitive-data-elements/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#updateSensitiveDataElement
+  readonly: false
+- name: delete_sensitive_data_element_by_id
+  description: Delete sensitive data element
+  category: Sensitive Data Element
+  method: DELETE
+  path: /api/v1/sensitive-data-elements/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#deleteSensitiveDataElementById
+  readonly: false
+- name: get_nhi_by_id
+  description: Get NHI
+  category: Non Human Identity
+  method: GET
+  path: /api/v1/non-human-identities/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getNhiById
+  readonly: true
+- name: update_non_human_identity
+  description: Update NHI
+  category: Non Human Identity
+  method: PUT
+  path: /api/v1/non-human-identities/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#updateNonHumanIdentity
+  readonly: false
+- name: get_channel_by_id
+  description: Get channel
+  category: Channel
+  method: GET
+  path: /api/v1/channels/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getChannelById
+  readonly: true
+- name: update_channel
+  description: Update channel
+  category: Channel
+  method: PUT
+  path: /api/v1/channels/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#updateChannel
+  readonly: false
+- name: delete_channel
+  description: Delete channel
+  category: Channel
+  method: DELETE
+  path: /api/v1/channels/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#deleteChannel
+  readonly: false
+- name: get_application_by_id
+  description: Get application
+  category: Application
+  method: GET
+  path: /api/v1/applications/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getApplicationById
+  readonly: true
+- name: update_application
+  description: Update application
+  category: Application
+  method: PUT
+  path: /api/v1/applications/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#updateApplication
+  readonly: false
+- name: delete_application
+  description: Delete application
+  category: Application
+  method: DELETE
+  path: /api/v1/applications/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#deleteApplication
+  readonly: false
+- name: get_alert_by_id
+  description: Get alert
+  category: Alert
+  method: GET
+  path: /api/v1/alerts/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getAlertById
+  readonly: true
+- name: update_alert
+  description: Update alert
+  category: Alert
+  method: PUT
+  path: /api/v1/alerts/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#updateAlert
+  readonly: false
+- name: delete_alert
+  description: Delete alert
+  category: Alert
+  method: DELETE
+  path: /api/v1/alerts/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#deleteAlert
+  readonly: false
+- name: get_services
+  description: Get all services
+  category: Service
+  method: GET
+  path: /api/v1/services
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getServices
+  readonly: true
+- name: delete_all_services
+  description: Delete all services
+  category: Service
+  method: DELETE
+  path: /api/v1/services
+  source_operation: openapi/channelseal-platform-api-openapi.yml#deleteAllServices
+  readonly: false
+- name: get_all_service_providers
+  description: Get all service providers
+  category: Service Provider
+  method: GET
+  path: /api/v1/serviceproviders
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getAllServiceProviders
+  readonly: true
+- name: delete_all_service_providers
+  description: Delete all service providers
+  category: Service Provider
+  method: DELETE
+  path: /api/v1/serviceproviders
+  source_operation: openapi/channelseal-platform-api-openapi.yml#deleteAllServiceProviders
+  readonly: false
+- name: get_all_sensitive_data_elements
+  description: Get all sensitive data elements
+  category: Sensitive Data Element
+  method: GET
+  path: /api/v1/sensitive-data-elements
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getAllSensitiveDataElements
+  readonly: true
+- name: delete_all_sensitive_data_elements
+  description: Delete all sensitive data elements
+  category: Sensitive Data Element
+  method: DELETE
+  path: /api/v1/sensitive-data-elements
+  source_operation: openapi/channelseal-platform-api-openapi.yml#deleteAllSensitiveDataElements
+  readonly: false
+- name: get_all
+  description: Get all NHIs
+  category: Non Human Identity
+  method: GET
+  path: /api/v1/non-human-identities
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getAll
+  readonly: true
+- name: create
+  description: Create NHI
+  category: Non Human Identity
+  method: POST
+  path: /api/v1/non-human-identities
+  source_operation: openapi/channelseal-platform-api-openapi.yml#create
+  readonly: false
+- name: add_application
+  description: Add Application
+  category: Non Human Identity
+  method: POST
+  path: /api/v1/non-human-identities/{id}/applications/{application-id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#addApplication
+  readonly: false
+- name: remove_application
+  description: Remove Application
+  category: Non Human Identity
+  method: DELETE
+  path: /api/v1/non-human-identities/{id}/applications/{application-id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#removeApplication
+  readonly: false
+- name: get_all_channels
+  description: Get all channels
+  category: Channel
+  method: GET
+  path: /api/v1/channels
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getAllChannels
+  readonly: true
+- name: delete_all_channels
+  description: Delete all channels
+  category: Channel
+  method: DELETE
+  path: /api/v1/channels
+  source_operation: openapi/channelseal-platform-api-openapi.yml#deleteAllChannels
+  readonly: false
+- name: get_all_audit_events
+  description: Get all audit events
+  category: AuditEvent
+  method: GET
+  path: /api/v1/audit-events
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getAllAuditEvents
+  readonly: true
+- name: delete_all_audit_events
+  description: Delete all AuditEvents
+  category: AuditEvent
+  method: DELETE
+  path: /api/v1/audit-events
+  source_operation: openapi/channelseal-platform-api-openapi.yml#deleteAllAuditEvents
+  readonly: false
+- name: get_applications
+  description: Get all applications
+  category: Application
+  method: GET
+  path: /api/v1/applications
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getApplications
+  readonly: true
+- name: create_application
+  description: Create application
+  category: Application
+  method: POST
+  path: /api/v1/applications
+  source_operation: openapi/channelseal-platform-api-openapi.yml#createApplication
+  readonly: false
+- name: delete_all_applications
+  description: Delete all applications
+  category: Application
+  method: DELETE
+  path: /api/v1/applications
+  source_operation: openapi/channelseal-platform-api-openapi.yml#deleteAllApplications
+  readonly: false
+- name: get_alerts
+  description: Get all alerts
+  category: Alert
+  method: GET
+  path: /api/v1/alerts
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getAlerts
+  readonly: true
+- name: delete_alerts
+  description: Delete all alerts
+  category: Alert
+  method: DELETE
+  path: /api/v1/alerts
+  source_operation: openapi/channelseal-platform-api-openapi.yml#deleteAlerts
+  readonly: false
+- name: search_service_providers
+  description: Search service providers
+  category: Service Provider
+  method: GET
+  path: /api/v1/serviceproviders/search
+  source_operation: openapi/channelseal-platform-api-openapi.yml#searchServiceProviders
+  readonly: true
+- name: search_sensitive_data_elements
+  description: Search sensitive data elements
+  category: Sensitive Data Element
+  method: GET
+  path: /api/v1/sensitive-data-elements/search
+  source_operation: openapi/channelseal-platform-api-openapi.yml#searchSensitiveDataElements
+  readonly: true
+- name: get_applications_1
+  description: Get applications using NHI
+  category: Non Human Identity
+  method: GET
+  path: /api/v1/non-human-identities/{id}/applications
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getApplications_1
+  readonly: true
+- name: get_non_human_identities
+  description: Search NHIs
+  category: Non Human Identity
+  method: GET
+  path: /api/v1/non-human-identities/search
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getNonHumanIdentities
+  readonly: true
+- name: get_discovered_metrics
+  description: Get all metrics for portal dashboard
+  category: Summary Discovery Metrics
+  method: GET
+  path: /api/v1/dashboard/discovered
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getDiscoveredMetrics
+  readonly: true
+- name: get_non_human_identities_1
+  description: Get NHIs using Channel
+  category: Channel
+  method: GET
+  path: /api/v1/channels/{id}/non-human-identities
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getNonHumanIdentities_1
+  readonly: true
+- name: search_channels
+  description: Search channels
+  category: Channel
+  method: GET
+  path: /api/v1/channels/search
+  source_operation: openapi/channelseal-platform-api-openapi.yml#searchChannels
+  readonly: true
+- name: get_audit_event_by_id
+  description: Get audit event by id
+  category: AuditEvent
+  method: GET
+  path: /api/v1/audit-events/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getAuditEventById
+  readonly: true
+- name: delete_audit_event
+  description: Delete AuditEvent by id
+  category: AuditEvent
+  method: DELETE
+  path: /api/v1/audit-events/{id}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#deleteAuditEvent
+  readonly: false
+- name: search_audit_events
+  description: Search audit events
+  category: AuditEvent
+  method: GET
+  path: /api/v1/audit-events/search
+  source_operation: openapi/channelseal-platform-api-openapi.yml#searchAuditEvents
+  readonly: true
+- name: get_nhis_from_application_id
+  description: Get associated NHIs from Application
+  category: Application
+  method: GET
+  path: /api/v1/applications/{id}/non-human-identities
+  source_operation: openapi/channelseal-platform-api-openapi.yml#getNhisFromApplicationId
+  readonly: true
+- name: links
+  description: Monitor root endpoint
+  category: Monitor
+  method: GET
+  path: /actuator
+  source_operation: openapi/channelseal-platform-api-openapi.yml#links
+  readonly: true
+- name: scrape
+  description: Monitor endpoint 'prometheus'
+  category: Monitor
+  method: GET
+  path: /actuator/prometheus
+  source_operation: openapi/channelseal-platform-api-openapi.yml#scrape
+  readonly: true
+- name: list_names
+  description: Monitor endpoint 'metrics'
+  category: Monitor
+  method: GET
+  path: /actuator/metrics
+  source_operation: openapi/channelseal-platform-api-openapi.yml#listNames
+  readonly: true
+- name: metric
+  description: Monitor endpoint 'metrics-requiredMetricName'
+  category: Monitor
+  method: GET
+  path: /actuator/metrics/{requiredMetricName}
+  source_operation: openapi/channelseal-platform-api-openapi.yml#metric
+  readonly: true
+- name: info
+  description: Monitor endpoint 'info'
+  category: Monitor
+  method: GET
+  path: /actuator/info
+  source_operation: openapi/channelseal-platform-api-openapi.yml#info
+  readonly: true
+- name: health
+  description: Monitor endpoint 'health'
+  category: Monitor
+  method: GET
+  path: /actuator/health
+  source_operation: openapi/channelseal-platform-api-openapi.yml#health
+  readonly: true
+- name: get_api_by_id
+  description: Get API by id
+  category: Api
+  method: GET
+  path: /api/v1/apis/{id}
+  source_operation: openapi/channelseal-api-discovery-service-api-openapi.yml#getApiById
+  readonly: true
+- name: update_api
+  description: Update API
+  category: Api
+  method: PUT
+  path: /api/v1/apis/{id}
+  source_operation: openapi/channelseal-api-discovery-service-api-openapi.yml#updateApi
+  readonly: false
+- name: delete_api
+  description: Delete API by id
+  category: Api
+  method: DELETE
+  path: /api/v1/apis/{id}
+  source_operation: openapi/channelseal-api-discovery-service-api-openapi.yml#deleteApi
+  readonly: false
+- name: get_all_apis
+  description: Get all APIs
+  category: Api
+  method: GET
+  path: /api/v1/apis
+  source_operation: openapi/channelseal-api-discovery-service-api-openapi.yml#getAllApis
+  readonly: true
+- name: delete_all_apis
+  description: Delete all APIs
+  category: Api
+  method: DELETE
+  path: /api/v1/apis
+  source_operation: openapi/channelseal-api-discovery-service-api-openapi.yml#deleteAllApis
+  readonly: false
+- name: search_apis
+  description: Search APIs
+  category: Api
+  method: GET
+  path: /api/v1/apis/search
+  source_operation: openapi/channelseal-api-discovery-service-api-openapi.yml#searchApis
+  readonly: true
+- name: import_spec
+  description: Import API Specification
+  category: API Catalog
+  method: POST
+  path: /v1/api-specifications/import
+  source_operation: openapi/channelseal-api-catalog-api-openapi.yml#importSpec
+  readonly: false
+- name: links
+  description: Monitor endpoint
+  category: Monitor
+  method: GET
+  path: /actuator
+  source_operation: openapi/channelseal-api-catalog-api-openapi.yml#links
+  readonly: true
+- name: health
+  description: Monitor 'health' endpoint
+  category: Monitor
+  method: GET
+  path: /actuator/health
+  source_operation: openapi/channelseal-api-catalog-api-openapi.yml#health
+  readonly: true
+- name: get_info_type_by_id
+  description: Get sensitive info type
+  category: Sensitive Info Type
+  method: GET
+  path: /api/v1/infotypes/{id}
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#getInfoTypeById
+  readonly: true
+- name: update_info_type
+  description: Update sensitive info type
+  category: Sensitive Info Type
+  method: PUT
+  path: /api/v1/infotypes/{id}
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#updateInfoType
+  readonly: false
+- name: delete_info_type
+  description: Delete sensitive info type
+  category: Sensitive Info Type
+  method: DELETE
+  path: /api/v1/infotypes/{id}
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#deleteInfoType
+  readonly: false
+- name: get_info_group_by_id
+  description: Get sensitive info group
+  category: Sensitive Info Group
+  method: GET
+  path: /api/v1/infogroups/{id}
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#getInfoGroupById
+  readonly: true
+- name: update_info_group
+  description: Update sensitive info group
+  category: Sensitive Info Group
+  method: PUT
+  path: /api/v1/infogroups/{id}
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#updateInfoGroup
+  readonly: false
+- name: delete_info_group
+  description: Delete sensitive info group
+  category: Sensitive Info Group
+  method: DELETE
+  path: /api/v1/infogroups/{id}
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#deleteInfoGroup
+  readonly: false
+- name: get_classification_by_id
+  description: Get classification
+  category: Classification
+  method: GET
+  path: /api/v1/classifications/{id}
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#getClassificationById
+  readonly: true
+- name: update_classification
+  description: Update classification
+  category: Classification
+  method: PUT
+  path: /api/v1/classifications/{id}
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#updateClassification
+  readonly: false
+- name: delete_classification
+  description: Delete classification
+  category: Classification
+  method: DELETE
+  path: /api/v1/classifications/{id}
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#deleteClassification
+  readonly: false
+- name: get_info_types
+  description: Get all sensitive info types
+  category: Sensitive Info Type
+  method: GET
+  path: /api/v1/infotypes
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#getInfoTypes
+  readonly: true
+- name: create_info_type
+  description: Create sensitive info type
+  category: Sensitive Info Type
+  method: POST
+  path: /api/v1/infotypes
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#createInfoType
+  readonly: false
+- name: delete_info_types
+  description: Delete all sensitive info types
+  category: Sensitive Info Type
+  method: DELETE
+  path: /api/v1/infotypes
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#deleteInfoTypes
+  readonly: false
+- name: get_info_groups
+  description: Get all sensitive info groups
+  category: Sensitive Info Group
+  method: GET
+  path: /api/v1/infogroups
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#getInfoGroups
+  readonly: true
+- name: create_info_group
+  description: Create sensitive info group
+  category: Sensitive Info Group
+  method: POST
+  path: /api/v1/infogroups
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#createInfoGroup
+  readonly: false
+- name: delete_info_groups
+  description: Delete all sensitive info groups
+  category: Sensitive Info Group
+  method: DELETE
+  path: /api/v1/infogroups
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#deleteInfoGroups
+  readonly: false
+- name: get_classifications
+  description: Get all classifications
+  category: Classification
+  method: GET
+  path: /api/v1/classifications
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#getClassifications
+  readonly: true
+- name: create_classification
+  description: Create classification
+  category: Classification
+  method: POST
+  path: /api/v1/classifications
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#createClassification
+  readonly: false
+- name: delete_all_classifications
+  description: Delete all classifications
+  category: Classification
+  method: DELETE
+  path: /api/v1/classifications
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#deleteAllClassifications
+  readonly: false
+- name: search_sensitive_info_types
+  description: Search sensitive info types
+  category: Sensitive Info Type
+  method: GET
+  path: /api/v1/infotypes/search
+  source_operation: openapi/channelseal-data-classification-api-openapi.yml#searchSensitiveInfoTypes
+  readonly: true

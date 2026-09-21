@@ -5,28 +5,167 @@ description: ChannelSeal scores, monitors, and protects the interfaces AI agents
   security), sensitive-data-flow identification from schemas and metadata without payload inspection,
   and inline runtime policy enforcement inside the customer's environment. Invite-only, founding-customer
   stage in 2026; publishes a Zudoku developer portal with OpenAPI 3.1 documents for its Platform, API
-  Discovery, Data Classification and Catalog APIs.
+  Discovery, Data Classification and Catalog APIs, authenticated with OAuth 2.0 client credentials via an
+  Auth0 tenant, plus eighteen provider-authored Agent Skills (resource and process) that drive the same
+  APIs with curl, and an OpenTelemetry (OTLP) collector integration for feeding third-party API traffic
+  metadata into the platform.
 url: https://raw.githubusercontent.com/api-evangelist/channelseal/refs/heads/main/apis.yml
+image: https://www.channelseal.com/images/channelseal_logo_transparent.png
 x-type: company
 x-source: harvest:manual
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment pass 2026-09-20 (local-v3; was harvest)
 specificationVersion: '0.20'
 created: '2026-09-20'
 modified: '2026-09-20'
 tags:
 - Company
-apis: []
+- API Security
+- AI Agents
+- MCP
+- Data Classification
+- API Discovery
+- Non-Human Identity
+- Sensitive Data
+- Observability
+- OpenTelemetry
+- Governance
+apis:
+- aid: channelseal:platform-api
+  name: ChannelSeal Platform API
+  description: Platform resources behind the ChannelSeal Interface Scorecard — services, service providers,
+    channels (HTTP paths, Kafka topics, queues), applications, non-human identities (API keys, client IDs,
+    service accounts, X.509 fingerprints), sensitive data elements, alerts, CloudEvents-shaped audit events,
+    dashboard discovery metrics, and Spring Boot Actuator health/metrics endpoints. OpenAPI 3.1.0, version
+    0.1.0, 56 operations over 32 paths, RFC 9457 application/problem+json errors, Spring Data page/size/sort
+    pagination.
+  humanURL: https://docs.channelseal.com/platform
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - Alerts
+  - Application
+  - Channels
+  - Non-Human Identity
+  - Sensitive Data
+  - Audit Events
+  - Service Providers
+  - Monitoring
+  tags_raw:
+  - Alerts
+  - Applications
+  - Channels
+  - Non-Human Identity
+  - Sensitive Data
+  - Audit Events
+  - Service Providers
+  - Monitoring
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-platform-api-openapi.yml
+  - type: OpenAPI
+    name: Provider-hosted spec (docs portal schema route)
+    url: https://docs.channelseal.com/platform/0.1.0/schema.yaml
+  - type: OpenAPI
+    name: Shared schema components (ChannelSeal API Schemas)
+    url: openapi/channelseal-api-schemas-openapi.yml
+  - type: Documentation
+    url: https://docs.channelseal.com/platform
+- aid: channelseal:api-discovery-service-api
+  name: ChannelSeal API Discovery Service API
+  description: Discover and manage API registry entries — get, list, search, update and delete discovered or
+    registered API specifications (OpenAPI, AsyncAPI, GraphQL, WSDL, gRPC and others) with their security
+    scheme, ownership, source and service-provider metadata. OpenAPI 3.1.0, version 0.1.0, 6 operations.
+  humanURL: https://docs.channelseal.com/api-discovery
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - API Discovery
+  - API Registry
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-api-discovery-service-api-openapi.yml
+  - type: OpenAPI
+    name: Provider-hosted spec (docs portal schema route)
+    url: https://docs.channelseal.com/api-discovery/0.1.0/schema.yaml
+  - type: Documentation
+    url: https://docs.channelseal.com/api-discovery
+- aid: channelseal:api-catalog-api
+  name: ChannelSeal API Catalog API
+  description: Import API specifications into the ChannelSeal platform (POST /v1/api-specifications/import with an
+    ImportContext), plus Spring Boot Actuator health for the catalog service. OpenAPI 3.1.0, version 0.1.0,
+    3 operations. Served from a separate /catalog capability path.
+  humanURL: https://docs.channelseal.com/catalog
+  baseURL: https://api.channelseal.com/catalog
+  tags:
+  - API Catalog
+  - Specification Import
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-api-catalog-api-openapi.yml
+  - type: OpenAPI
+    name: Provider-hosted spec (docs portal schema route)
+    url: https://docs.channelseal.com/catalog/0.1.0/schema.yaml
+  - type: Documentation
+    url: https://docs.channelseal.com/catalog
+- aid: channelseal:data-classification-api
+  name: ChannelSeal Data Classification API
+  description: Manage the data-classification vocabulary the scorecard scores against — sensitive info types
+    (data type, format, pattern match, jurisdiction, risk), sensitive info groups (PII, Financial, Health) and
+    classification levels within a scheme. OpenAPI 3.1.0, version 0.1.0, 19 operations over 7 paths.
+  humanURL: https://docs.channelseal.com/data-classification
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - Data Classification
+  - Sensitive Data
+  - PII
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-data-classification-api-openapi.yml
+  - type: OpenAPI
+    name: Provider-hosted spec (docs portal schema route)
+    url: https://docs.channelseal.com/data-classification/0.1.0/schema.yaml
+  - type: Documentation
+    url: https://docs.channelseal.com/data-classification
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Authentication
+  url: authentication/channelseal-authentication.yml
+- type: OAuthScopes
+  url: scopes/channelseal-scopes.yml
 - type: Website
   url: https://www.channelseal.com/
+- type: DeveloperPortal
+  url: https://docs.channelseal.com/
 - type: Documentation
   url: https://docs.channelseal.com/
+- type: APIReference
+  url: https://docs.channelseal.com/api-reference
+- type: Authentication
+  name: OAuth 2.0 client credentials (docs)
+  url: https://docs.channelseal.com/api-reference#authentication
+- type: RateLimits
+  name: Rate limiting (docs)
+  url: https://docs.channelseal.com/api-reference#rate-limiting
+- type: ErrorCodes
+  name: RFC 9457 error handling (docs)
+  url: https://docs.channelseal.com/api-reference#error-handling
+- type: ChangeLog
+  name: API changelog (docs)
+  url: https://docs.channelseal.com/api-reference#changelog
+- type: AgentSkill
+  name: Agent Skills introduction (provider-published skills, sign-in required)
+  url: https://docs.channelseal.com/agent-skills
+- type: Integrations
+  url: https://github.com/channelseal/integrations
+- type: SignUp
+  url: https://docs.channelseal.com/signup
+- type: Login
+  url: https://docs.channelseal.com/signin
+- type: Support
+  url: mailto:support@channelseal.com
 - type: Blog
   url: https://www.channelseal.com/blog/
 - type: BlogRSS
@@ -39,3 +178,69 @@ common:
   url: https://www.channelseal.com/privacy.html
 - type: Contact
   url: mailto:hello@channelseal.com
+- type: DomainSecurity
+  url: security/channelseal-domain-security.yml
+- type: WellKnown
+  name: Well-known probe (only served documents are the Auth0 issuer metadata)
+  url: well-known/channelseal-well-known.yml
+- type: Conformance
+  url: conformance/channelseal-conformance.yml
+- type: ErrorCatalog
+  url: errors/channelseal-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/channelseal-lifecycle.yml
+- type: Conventions
+  url: conventions/channelseal-conventions.yml
+- type: RateLimits
+  name: Rate limits (artifact)
+  url: rate-limits/channelseal-rate-limits.yml
+- type: Plans
+  url: plans/channelseal-plans-pricing.yml
+- type: ChangeLog
+  name: API changelog (artifact)
+  url: changelog/channelseal-changelog.yml
+- type: Sandbox
+  name: Environments — UAT / staging (no test values published)
+  url: sandbox/channelseal-sandbox.yml
+- type: DataModel
+  url: data-model/channelseal-data-model.yml
+- type: LLMsTxt
+  url: llms/channelseal-llms.txt
+- type: AgentSkill
+  name: Skills index — 18 provider-published (gated) + 3 API Evangelist skills
+  url: skills/_index.yml
+- type: AgentSkill
+  name: Import an API specification and inventory what it exposes
+  url: skills/channelseal-import-and-inventory-apis.md
+- type: AgentSkill
+  name: Find where sensitive data flows and which identities carry it
+  url: skills/channelseal-find-sensitive-data-flows.md
+- type: AgentSkill
+  name: Triage open alerts and move them through their lifecycle
+  url: skills/channelseal-triage-alerts.md
+- type: X-MCPServerCandidate
+  name: Derived candidate tool list — no MCP server shipped (deployment.mode none)
+  url: mcp/channelseal-mcp.yml
+- type: DataSubjectRequest
+  name: Privacy rights (access, correction, deletion, portability) via hello@channelseal.com
+  url: https://www.channelseal.com/privacy.html
+- type: Overlay
+  name: Platform API overlay
+  url: overlays/channelseal-platform-overlay.yaml
+- type: Overlay
+  name: API Discovery Service overlay
+  url: overlays/channelseal-api-discovery-overlay.yaml
+- type: Overlay
+  name: API Catalog overlay
+  url: overlays/channelseal-catalog-overlay.yaml
+- type: Overlay
+  name: Data Classification overlay
+  url: overlays/channelseal-data-classification-overlay.yaml
+- type: Overlay
+  name: API Schemas overlay
+  url: overlays/channelseal-schemas-overlay.yaml
+x-enrichment:
+  date: '2026-09-20'
+  status: enriched
+  artifacts_added: 37
+  pass: local-v3

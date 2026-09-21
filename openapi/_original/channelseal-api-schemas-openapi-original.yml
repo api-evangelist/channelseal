@@ -1,0 +1,621 @@
+openapi: 3.1.0
+info:
+  title: ChannelSeal API Schemas
+  description: Common schema components used across ChannelSeal APIs
+  version: 0.1.0
+  contact:
+    email: support@channelseal.com
+servers:
+  - url: https://api.channelseal.com/platform
+    description: prod server
+  - url: https://uat.channelseal.com/platform
+    description: uat server
+  - url: https://staging.channelseal.com/platform
+    description: staging server
+components:
+  schemas:
+    Metadata:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        altId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        updatedBy:
+          type: string
+    Service:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        name:
+          type: string
+        description:
+          type: string
+        businessCapability:
+          type: string
+        serviceProvider:
+          $ref: '#/components/schemas/ServiceProvider'
+        uriPath:
+          type: string
+    ServiceProvider:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        name:
+          type: string
+        description:
+          type: string
+        domainUri:
+          type: string
+        domainUris:
+          type: array
+          items:
+            type: string
+        apiDoc:
+          type: string
+    ProblemDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+        properties:
+          type: object
+        additionalProperties: {}
+    Classification:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        name:
+          type: string
+        description:
+          type: string
+        scheme:
+          type: string
+        uri:
+          type: string
+    SensitiveDataElement:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        name:
+          type: string
+        elementLocation:
+          type: string
+          enum:
+            - URI
+            - PATH
+            - QUERY
+            - HEADER
+            - BODY
+        sensitiveInfoType:
+          $ref: '#/components/schemas/SensitiveInfoType'
+        channelAltId:
+          type: string
+          format: uuid
+        channelEndpoint:
+          type: string
+        serviceProviderAltId:
+          type: string
+          format: uuid
+        messageDirection:
+          type: string
+          enum:
+            - RECEIVE
+            - SEND
+        identificationMethod:
+          type: string
+          enum:
+            - ADDED
+            - DISCOVERED
+        likelihood:
+          type: string
+          enum:
+            - VERY_UNLIKELY
+            - UNLIKELY
+            - POSSIBLE
+            - LIKELY
+            - VERY_LIKELY
+        detectorUsed:
+          $ref: '#/components/schemas/SensitiveInfoTypeDetector'
+        risk:
+          type: string
+          enum:
+            - HIGH
+            - MEDIUM
+            - LOW
+        eventSource:
+          type: string
+    SensitiveInfoGroup:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        name:
+          type: string
+        description:
+          type: string
+    SensitiveInfoType:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        name:
+          type: string
+        dataType:
+          type: string
+          enum:
+            - BOOLEAN
+            - INTEGER
+            - NUMBER
+            - OBJECT
+            - STRING
+        dataTypeFormat:
+          type: string
+          enum:
+            - INT32
+            - INT64
+            - BIGINT
+            - FLOAT
+            - DOUBLE
+            - DECIMAL
+            - BYTE
+            - BINARY
+            - DATE
+            - DATE-TIME
+            - TIME
+            - DURATION
+            - PERIOD
+            - EMAIL
+            - IDN-EMAIL
+            - HOSTNAME
+            - IPV4
+            - IPV6
+            - URI
+            - URI-REFERENCE
+            - URI-TEMPLATE
+            - IRI
+            - IRI-REFERENCE
+            - UUID
+            - ISO-639-1
+            - BCP47
+            - ISO-3166-ALPHA-2
+            - ISO-4217
+            - GTIN-13
+        description:
+          type: string
+        infoGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/SensitiveInfoGroup'
+        patternMatchName:
+          type: string
+        patternMatchValue:
+          type: string
+        jurisdiction:
+          type: string
+        classification:
+          $ref: '#/components/schemas/Classification'
+        risk:
+          type: string
+          enum:
+            - HIGH
+            - MEDIUM
+            - LOW
+        alias:
+          type: array
+          items:
+            type: string
+    SensitiveInfoTypeDetector:
+      type: object
+      properties:
+        id:
+          type: string
+        tenantId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+        description:
+          type: string
+        sensitiveInfoTypeId:
+          type: string
+        keywordMatchName:
+          type: array
+          items:
+            type: string
+        patternMatchName:
+          type: string
+        patternMatchValue:
+          type: string
+    NonHumanIdentity:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        clientId:
+          type: string
+        description:
+          type: string
+        identityType:
+          type: string
+          enum:
+            - API_KEY
+            - CLIENT_ID
+            - SERVICE_ACCOUNT_ID
+            - USER_ID
+            - X509_CERTIFICATE_FINGERPRINT
+        serviceProvider:
+          $ref: '#/components/schemas/ServiceProvider'
+    Api:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        digest:
+          type: string
+        specification:
+          type: string
+          enum:
+            - ASYNCAPI
+            - GOOGLE_DISCOVERY
+            - GRAPHQL
+            - OPENAPI
+            - OPENRPC
+            - RAML
+            - SOAP
+            - SWAGGER
+            - WSDL
+        specificationVersion:
+          type: string
+        specificationContentType:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+        summary:
+          type: string
+        description:
+          type: string
+        storageLocation:
+          type: string
+          format: uri
+        source:
+          $ref: '#/components/schemas/ApiSource'
+        domainName:
+          type: string
+        securityScheme:
+          type: string
+          enum:
+            - API_KEY
+            - HTTP
+            - DIGEST_AUTH
+            - HTTP_SIGNATURE
+            - MUTUAL_TLS
+            - OAUTH2
+            - OPENID_CONNECT
+        serviceProvider:
+          $ref: '#/components/schemas/ServiceProvider'
+        type:
+          type: string
+          enum:
+            - PARTNER
+            - PRIVATE
+            - PUBLIC
+            - VENDOR
+        teamId:
+          type: string
+        teamAltId:
+          type: string
+          format: uuid
+        technicalOwnerName:
+          type: string
+        technicalOwnerEmail:
+          type: string
+        businessOwnerName:
+          type: string
+        businessOwnerEmail:
+          type: string
+    ApiSource:
+      type: object
+      properties:
+        source:
+          type: string
+        sourceMethod:
+          type: string
+          enum:
+            - SEARCH
+            - INTEGRATION
+        sourceTime:
+          type: string
+          format: date-time
+    Channel:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        name:
+          type: string
+        uri:
+          type: string
+        service:
+          $ref: '#/components/schemas/Service'
+        api:
+          $ref: '#/components/schemas/Api'
+        type:
+          type: string
+          enum:
+            - PATH
+            - TOPIC
+            - QUEUE
+            - IRC_CHANNEL
+        protocol:
+          type: string
+          enum:
+            - HTTP
+            - HTTPS
+            - JMS
+            - IBM_MQ
+            - KAFKA
+            - MQTT
+            - AMQP
+            - WEBSOCKET
+        method:
+          type: string
+          enum:
+            - OPTIONS
+            - GET
+            - POST
+            - PATCH
+            - PUT
+            - DELETE
+            - PUBLISH
+            - SUBSCRIBE
+            - ENQUEUE
+            - DEQUEUE
+            - PUSH
+            - PULL
+        clientId:
+          type: string
+        infrastructureAltId:
+          type: string
+          format: uuid
+        integrationAltId:
+          type: string
+          format: uuid
+        eventSource:
+          type: string
+    Application:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        name:
+          type: string
+        description:
+          type: string
+        teamId:
+          type: string
+        teamAltId:
+          type: string
+          format: uuid
+        team:
+          $ref: '#/components/schemas/Team'
+        technicalOwnerName:
+          type: string
+        technicalOwnerEmail:
+          type: string
+        businessOwnerName:
+          type: string
+        businessOwnerEmail:
+          type: string
+        portfolioId:
+          type: string
+        domain:
+          type: string
+        subdomain:
+          type: string
+        otherId:
+          type: string
+    Team:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        name:
+          type: string
+        description:
+          type: string
+        teamEmail:
+          type: string
+        leadName:
+          type: string
+        leadEmail:
+          type: string
+    Alert:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        description:
+          type: string
+        alertType:
+          type: string
+          enum:
+            - UNKNOWN_SERVICE_PROVIDER
+            - UNKNOWN_CHANNEL
+            - NEW_CHANNEL_WITH_SENSITIVE_DATA
+            - SENSITIVE_DATA_IN_CLEAR_TEXT
+            - CLIENT_ID_ACROSS_APPLICATIONS
+        applicationAltId:
+          type: string
+          format: uuid
+        channelAltId:
+          type: string
+          format: uuid
+        severity:
+          type: string
+          enum:
+            - INFO
+            - LOW
+            - MEDIUM
+            - HIGH
+            - CRITICAL
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - UNRESOLVED
+            - RESOLVED
+            - PROCESSING
+            - ACKNOWLEDGED
+            - ESCALATED
+            - CLOSED
+    CloudEvent:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CloudEventData'
+        dataSchema:
+          type: string
+          format: uri
+        subject:
+          type: string
+        attributeNames:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+        specVersion:
+          type: string
+          enum:
+            - "0.3"
+            - "1.0"
+        dataContentType:
+          type: string
+        id:
+          type: string
+        type:
+          type: string
+        time:
+          type: string
+          format: date-time
+        source:
+          type: string
+          format: uri
+        extensionNames:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+    CloudEventData:
+      type: object
+    ChannelsealEvent:
+      type: object
+      properties:
+        id:
+          type: string
+        source:
+          type: string
+        specversion:
+          type: string
+        type:
+          type: string
+        datacontenttype:
+          type: string
+        dataschema:
+          type: string
+          format: uri
+        subject:
+          type: string
+        time:
+          type: string
+          format: date-time
+        data: {}
+        data_base64:
+          type: string
+        tenantid:
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    PagedModel:
+      type: object
+      properties:
+        content:
+          type: array
+          items: {}
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    Pageable:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+          minimum: 0
+        size:
+          type: integer
+          format: int32
+          minimum: 1
+        sort:
+          type: array
+          items:
+            type: string
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+        templated:
+          type: boolean
+  securitySchemes:
+    security_auth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://dev-channelseal.us.auth0.com/oauth/token
+          scopes: {}

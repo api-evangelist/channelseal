@@ -1,0 +1,50 @@
+generated: '2026-09-20'
+method: searched
+source: openapi/channelseal-api-schemas-openapi.yml
+docs: https://docs.channelseal.com/api-reference#authentication
+description: >-
+  Every ChannelSeal API request is authenticated with an OAuth 2.0 client-credentials access token
+  (RFC 6749 §4.4) presented as a Bearer token. Clients are created in the ChannelSeal Portal under
+  Settings → API Credentials; tokens are minted by the provider's Auth0 tenant
+  (https://dev-channelseal.us.auth0.com/oauth/token) with audience https://api.channelseal.com and
+  expire after 3600 seconds. Note the spec-level defect: four of the five OpenAPI documents declare the
+  scheme under components.schemas.securitySchemes (a schema named "securitySchemes") rather than
+  components.securitySchemes, and none applies a security[] requirement to any operation, so a generic
+  OpenAPI client would treat every operation as anonymous. Only the shared-components document declares
+  it correctly. The docs, not the contract, are the authority for auth here.
+summary:
+  types: [oauth2]
+  oauth2_flows: [clientCredentials]
+  token_location: Authorization header, Bearer scheme
+  token_lifetime_seconds: 3600
+  issuer: https://dev-channelseal.us.auth0.com/
+  audience: https://api.channelseal.com
+  https_required: true
+schemes:
+- name: security_auth
+  type: oauth2
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://dev-channelseal.us.auth0.com/oauth/token
+    scopes: 5
+    scopes_detail: scopes/channelseal-scopes.yml
+  sources:
+  - openapi/channelseal-api-schemas-openapi.yml
+  - https://docs.channelseal.com/api-reference#authentication
+issuer_metadata:
+  openid_configuration: well-known/channelseal-auth0-openid-configuration.json
+  oauth_authorization_server: well-known/channelseal-auth0-oauth-authorization-server.json
+  token_endpoint_auth_methods_supported: [client_secret_basic, client_secret_post, private_key_jwt, none]
+  grant_types_supported_relevant: [client_credentials, authorization_code, refresh_token, device_code, token-exchange, jwt-bearer]
+  registration_endpoint: https://dev-channelseal.us.auth0.com/oidc/register
+  code_challenge_methods_supported: [S256, plain]
+credential_issuance:
+  where: ChannelSeal Portal → Settings → API Credentials → Create OAuth Client
+  self_service: true
+  note: The platform is invite-only (founding-customer program) so a portal account precedes any credential.
+error_semantics:
+  '401': The access token is invalid or has expired (application/problem+json, type https://api.channelseal.com/problems/unauthorized)
+  '403': Insufficient permissions; the problem detail names the required scope
+notes:
+- The issuer is a tenant literally named dev-channelseal on Auth0's shared us.auth0.com domain, yet the docs present it as the production token endpoint.
+- The production API host (api.channelseal.com) named as audience and server did not resolve in DNS on 2026-09-20; staging.channelseal.com enforces the bearer requirement live (401 on /platform/api/v1/apis without a token).

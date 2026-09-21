@@ -1,0 +1,31 @@
+generated: '2026-09-20'
+method: searched
+source: https://docs.channelseal.com/api-reference#changelog
+description: >-
+  ChannelSeal keeps a short dated changelog at the foot of the API reference. One entry exists. The docs
+  source (served as markdown at docs.channelseal.com/api-reference.md) also carries two commented-out
+  lines — "Added webhook support" and "Added rate limiting" — that are not published and are not
+  recorded as changes here.
+docs: https://docs.channelseal.com/api-reference#changelog
+versioning:
+  scheme: semver on the documents (info.version), uri-path v1 on the API
+  current: 0.1.0
+  detail: lifecycle/channelseal-lifecycle.yml
+entries:
+- version: 0.1.0
+  date: '2026-02-11'
+  latest: true
+  breaking: false
+  highlights:
+  - Initial API release
+  - Added Resources endpoints
+related_dates:
+- date: '2026-02-26'
+  source: https://channelseal.github.io/blog/welcome-to-channelseal/
+  note: blog launched
+- date: '2026-03-03'
+  source: https://channelseal.github.io/blog/otel-integration/
+  note: OpenTelemetry → ChannelSeal integration announced (github.com/channelseal/integrations)
+- date: '2026-07-21'
+  source: docs.channelseal.com (Zudoku lastModifiedTime on every page)
+  note: Agent Skills section (18 skills) published to the portal

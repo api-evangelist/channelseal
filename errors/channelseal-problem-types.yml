@@ -1,0 +1,84 @@
+generated: '2026-09-20'
+method: searched
+format: rfc9457
+source: >-
+  Derived from the 4xx/5xx responses in openapi/*.yml (every error response is application/problem+json
+  with the shared ProblemDetail schema — type, title, status, detail, instance, properties), enriched with
+  the docs' error reference at https://docs.channelseal.com/api-reference#error-handling, which publishes
+  the problem-type URI scheme (https://api.channelseal.com/problems/<slug>), the status-code table and
+  worked examples with extension members.
+docs: https://docs.channelseal.com/api-reference#error-handling
+envelope:
+  media_type: application/problem+json
+  schema: openapi/channelseal-api-schemas-openapi.yml#/components/schemas/ProblemDetail
+  shape: '{ "type": uri, "title": string, "status": integer, "detail": string, "instance": uri, ...extensions }'
+  extension_members:
+    errors: array of {field, message, code, rejected_value?, allowed_values?} on validation failures (docs example)
+    retry_after: seconds, on 429 (docs example; also sent as the Retry-After header)
+    trace_id: uuid on 500 — "Include the trace_id when contacting support"
+    conflicting_resource: id of the existing resource on 409 (docs example)
+    properties: free-form map declared on ProblemDetail in the spec
+type_uri_scheme: https://api.channelseal.com/problems/{slug}
+problems:
+- status: 400
+  type: https://api.channelseal.com/problems/bad-request
+  title: Bad Request
+  meaning: Invalid parameters / malformed syntax
+  in_spec: true
+  source_operations: 26 operations across openapi/channelseal-platform-api-openapi.yml, channelseal-data-classification-api-openapi.yml, channelseal-api-discovery-service-api-openapi.yml (response "Invalid request")
+- status: 401
+  type: https://api.channelseal.com/problems/unauthorized
+  title: Unauthorized
+  meaning: Invalid or missing access token — refresh the client-credentials token and retry
+  in_spec: false
+  note: Documented and observed live (staging.channelseal.com/platform/api/v1/apis → 401) but absent from every OpenAPI response map.
+- status: 403
+  type: https://api.channelseal.com/problems/forbidden
+  title: Forbidden
+  meaning: >-
+    Insufficient permissions; detail names the required scope (e.g. "Required scope: 'admin'")
+  in_spec: false
+- status: 404
+  type: https://api.channelseal.com/problems/not-found
+  title: Not Found
+  meaning: Resource does not exist
+  in_spec: true
+  source_operations: >-
+    every get/update/delete-by-id operation (e.g. openapi/channelseal-platform-api-openapi.yml#getAlertById)
+- status: 409
+  type: https://api.channelseal.com/problems/conflict
+  title: Conflict
+  meaning: Resource state conflict (e.g. a resource with this name already exists); carries conflicting_resource
+  in_spec: false
+- status: 422
+  type: https://api.channelseal.com/problems/validation-error
+  title: Validation Error
+  meaning: One or more fields failed validation; errors[] lists field/message/code
+  in_spec: false
+  note: >-
+    The docs' 422 example body carries "status": 400 — a documentation inconsistency worth reporting to the provider.
+- status: 429
+  type: https://api.channelseal.com/problems/rate-limit-exceeded
+  title: Rate Limit Exceeded
+  meaning: Tier limit exhausted; back off for retry_after / Retry-After seconds
+  in_spec: false
+  headers: [Retry-After, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset]
+- status: 500
+  type: https://api.channelseal.com/problems/internal-error
+  title: Internal Server Error
+  meaning: Unexpected error; log trace_id for support
+  in_spec: true
+  source_operations: 47 of 56 Platform operations plus the Discovery, Catalog and Data Classification operations (response "Internal server error")
+- status: 503
+  type: null
+  title: Service Unavailable
+  meaning: Listed in the docs status table without a problem type; /platform/actuator/health on staging answered 503 {"status":"OUT_OF_SERVICE"} on 2026-09-20
+  in_spec: false
+success_codes:
+  '200': Successful (43 Platform operations)
+  '201': Created (create* / addApplication)
+  '204': No Content (delete operations)
+retry_guidance:
+  '401': refresh token and retry once
+  '429': honour Retry-After (docs recommend exponential backoff)
+  '500': do not retry blindly; capture trace_id

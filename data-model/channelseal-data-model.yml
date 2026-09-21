@@ -1,0 +1,168 @@
+generated: '2026-09-20'
+method: derived
+source: >-
+  Derived from the schema $ref links and *AltId reference fields in
+  openapi/channelseal-api-schemas-openapi.yml (the shared components document) and the sub-resource
+  paths in openapi/channelseal-platform-api-openapi.yml (/non-human-identities/{id}/applications,
+  /applications/{id}/non-human-identities, /channels/{id}/non-human-identities). No object reference
+  page exists beyond the spec; identifiers are UUID altIds with no type prefix.
+docs: https://docs.channelseal.com/components
+notation: >-
+  relationships use has_one / has_many / belongs_to with the referencing field or path; direction is from
+  the entity that owns the reference. Every entity embeds Metadata (tenantId, altId uuid, createdAt,
+  updatedAt, createdBy, updatedBy); altId is the {id} used in paths.
+identifier:
+  field: metadata.altId
+  format: uuid
+  prefix: null
+  tenant_scope: metadata.tenantId
+entities:
+- name: ServiceProvider
+  domain: inventory
+  api: platform
+  description: A third-party SaaS/cloud vendor identified by domainUri(s) and an apiDoc link; the root of the third-party
+    surface.
+- name: Service
+  domain: inventory
+  api: platform
+  description: A service (uriPath, businessCapability) offered by a ServiceProvider.
+- name: Api
+  domain: inventory
+  api: api-discovery
+  description: A discovered or registered API specification (OPENAPI, ASYNCAPI, GRAPHQL, WSDL, SOAP, RAML, OPENRPC,
+    GOOGLE_DISCOVERY, SWAGGER) with digest, securityScheme, type (PARTNER/PRIVATE/PUBLIC/VENDOR), owners and ApiSource
+    (SEARCH or INTEGRATION).
+- name: Channel
+  domain: inventory
+  api: platform
+  description: A communication endpoint — PATH, TOPIC, QUEUE or IRC_CHANNEL — over HTTP(S), JMS, IBM_MQ, KAFKA,
+    MQTT, AMQP or WEBSOCKET with a method (GET…DELETE, PUBLISH/SUBSCRIBE, ENQUEUE/DEQUEUE, PUSH/PULL); the unit
+    the Interface Scorecard scores.
+- name: Application
+  domain: inventory
+  api: platform
+  description: A customer software system with team, owners, portfolio, domain and subdomain.
+- name: Team
+  domain: inventory
+  api: platform
+  description: An owning team (lead, teamEmail); embedded in Application.
+- name: NonHumanIdentity
+  domain: identity
+  api: platform
+  description: A machine identity — API_KEY, CLIENT_ID, SERVICE_ACCOUNT_ID, USER_ID or X509_CERTIFICATE_FINGERPRINT
+    — bound to a ServiceProvider and associated with Applications.
+- name: SensitiveDataElement
+  domain: data-posture
+  api: platform
+  description: A discovered (or ADDED) instance of sensitive data at a location (URI, PATH, QUERY, HEADER, BODY)
+    on a Channel, with direction (RECEIVE/SEND), likelihood, risk and the detector used.
+- name: SensitiveInfoType
+  domain: classification
+  api: data-classification
+  description: A category of sensitive data (dataType, dataTypeFormat, pattern match, jurisdiction, risk, aliases)
+    grouped into info groups and mapped to a Classification.
+- name: SensitiveInfoGroup
+  domain: classification
+  api: data-classification
+  description: A logical grouping of info types (PII, Financial, Health).
+- name: Classification
+  domain: classification
+  api: data-classification
+  description: A sensitivity level within a scheme (e.g. Confidential) identified by uri.
+- name: SensitiveInfoTypeDetector
+  domain: classification
+  api: platform
+  description: The detector that identified a SensitiveDataElement.
+- name: Alert
+  domain: monitoring
+  api: platform
+  description: A policy or anomaly finding (UNKNOWN_SERVICE_PROVIDER, UNKNOWN_CHANNEL, NEW_CHANNEL_WITH_SENSITIVE_DATA,
+    SENSITIVE_DATA_IN_CLEAR_TEXT, CLIENT_ID_ACROSS_APPLICATIONS) with severity INFO…CRITICAL and status UNRESOLVED→…→CLOSED.
+- name: ChannelsealEvent
+  domain: audit
+  api: platform
+  description: A CloudEvents-shaped audit record (id, source, specversion, type, datacontenttype, dataschema, subject,
+    time, data, tenantid) of a platform action.
+- name: ImportContext
+  domain: catalog
+  api: catalog
+  description: The request body for importing an API specification into the catalog.
+relationships:
+- from: Service
+  type: belongs_to
+  to: ServiceProvider
+  via: serviceProvider
+- from: Api
+  type: belongs_to
+  to: ServiceProvider
+  via: serviceProvider
+- from: Api
+  type: belongs_to
+  to: Team
+  via: teamAltId
+- from: Api
+  type: has_one
+  to: ApiSource
+  via: source
+- from: Channel
+  type: belongs_to
+  to: Service
+  via: service
+- from: Channel
+  type: belongs_to
+  to: Api
+  via: api
+- from: Channel
+  type: has_many
+  to: NonHumanIdentity
+  via: GET /api/v1/channels/{id}/non-human-identities (getNonHumanIdentities_1)
+- from: Application
+  type: belongs_to
+  to: Team
+  via: team / teamAltId
+- from: Application
+  type: has_many
+  to: NonHumanIdentity
+  via: GET /api/v1/applications/{id}/non-human-identities (getNhisFromApplicationId)
+- from: NonHumanIdentity
+  type: belongs_to
+  to: ServiceProvider
+  via: serviceProvider
+- from: NonHumanIdentity
+  type: has_many
+  to: Application
+  via: /api/v1/non-human-identities/{id}/applications (getApplications_1, addApplication, removeApplication)
+- from: SensitiveDataElement
+  type: belongs_to
+  to: Channel
+  via: channelAltId
+- from: SensitiveDataElement
+  type: belongs_to
+  to: ServiceProvider
+  via: serviceProviderAltId
+- from: SensitiveDataElement
+  type: belongs_to
+  to: SensitiveInfoType
+  via: sensitiveInfoType
+- from: SensitiveDataElement
+  type: has_one
+  to: SensitiveInfoTypeDetector
+  via: detectorUsed
+- from: SensitiveInfoType
+  type: has_many
+  to: SensitiveInfoGroup
+  via: infoGroups
+- from: SensitiveInfoType
+  type: belongs_to
+  to: Classification
+  via: classification
+- from: Alert
+  type: belongs_to
+  to: Application
+  via: applicationAltId
+- from: Alert
+  type: belongs_to
+  to: Channel
+  via: channelAltId
+paging_envelope: >-
+  PagedModel { content[], page{size, number, totalElements, totalPages} } — typed as <Entity>PagedModel per resource

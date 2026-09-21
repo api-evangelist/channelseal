@@ -1,0 +1,121 @@
+generated: '2026-09-20'
+method: searched
+source: >-
+  openapi/*.yml (securitySchemes, ProblemDetail responses, Pageable/PagedModel, CloudEvent/ChannelsealEvent
+  schemas), docs.channelseal.com/api-reference (authentication, error handling, pagination, data security,
+  GDPR statement), docs.channelseal.com/agent-skills, github.com/channelseal/integrations (OpenTelemetry
+  collector integration), www.channelseal.com homepage compliance claims.
+standards:
+- id: oauth2
+  conforms: true
+  evidence: >-
+    components.securitySchemes.security_auth type oauth2 clientCredentials, tokenUrl
+    https://dev-channelseal.us.auth0.com/oauth/token (openapi/channelseal-api-schemas-openapi.yml);
+    docs.channelseal.com/api-reference#authentication documents the RFC 6749 §4.4 client-credentials
+    grant with audience https://api.channelseal.com.
+- id: oauth2-authorization-server-metadata
+  conforms: true
+  evidence: >-
+    RFC 8414 metadata served at https://dev-channelseal.us.auth0.com/.well-known/oauth-authorization-server
+    (200, saved as well-known/channelseal-auth0-oauth-authorization-server.json) — on the provider's Auth0
+    tenant, not on a channelseal.com host.
+- id: oidc
+  conforms: true
+  evidence: >-
+    OpenID Connect discovery served at https://dev-channelseal.us.auth0.com/.well-known/openid-configuration
+    (200). Used for portal login; the APIs themselves take client-credentials bearer tokens.
+- id: rfc9457-problem-details
+  conforms: true
+  evidence: >-
+    Every 4xx/5xx response in openapi/*.yml is application/problem+json with the ProblemDetail schema
+    (type, title, status, detail, instance, properties); docs.channelseal.com/api-reference#error-handling
+    names RFC 9457 and publishes type URIs under https://api.channelseal.com/problems/. See
+    errors/channelseal-problem-types.yml.
+- id: oauth2-protected-resource-metadata
+  conforms: false
+  evidence: /.well-known/oauth-protected-resource is not served on any ChannelSeal host (RFC 9728 absent).
+- id: pagination
+  conforms: true
+  evidence: >-
+    Spring Data page/size/sort request model (Pageable) and content[] + page{size,number,totalElements,
+    totalPages} response envelope (PagedModel) across every list operation; documented at
+    docs.channelseal.com/api-reference#pagination. Offset-style, not cursor.
+- id: idempotency
+  conforms: false
+  evidence: No Idempotency-Key header or equivalent in any spec or in the docs; see conventions/channelseal-conventions.yml.
+- id: rfc8594-sunset
+  conforms: false
+  evidence: No Sunset/Deprecation headers and no deprecation policy published; see lifecycle/channelseal-lifecycle.yml.
+- id: rfc6585-rate-limit-headers
+  conforms: true
+  evidence: >-
+    docs.channelseal.com/api-reference#rate-limiting publishes X-RateLimit-Limit / X-RateLimit-Remaining /
+    X-RateLimit-Reset and Retry-After on 429 (the draft IETF RateLimit-* names are not used).
+- id: https-only
+  conforms: true
+  evidence: docs.channelseal.com/api-reference "All API requests must use HTTPS. Requests made over HTTP will fail."
+- id: cloudevents-1.0
+  conforms: true
+  kind: domain-standard
+  evidence: >-
+    Audit events are modelled as CloudEvents — components.schemas.ChannelsealEvent carries the CloudEvents
+    core attributes (id, source, specversion, type, datacontenttype, dataschema, subject, time, data,
+    data_base64) and components.schemas.CloudEvent carries specVersion enum ['0.3','1.0'] with
+    attributeNames/extensionNames (openapi/channelseal-api-schemas-openapi.yml). GET /api/v1/audit-events
+    returns ChannelsealEventPagedModel (openapi/channelseal-platform-api-openapi.yml#getAllAuditEvents).
+- id: opentelemetry-otlp
+  conforms: true
+  kind: domain-standard
+  evidence: >-
+    The provider's published integration ingests OTLP/HTTP logs and traces (HTTP semantic-convention spans)
+    via an OpenTelemetry Collector otlphttp exporter authenticated with OAuth2 client credentials
+    (scope import:telemetry) — github.com/channelseal/integrations/otlp-collector; endpoint documented
+    for UAT as https://uat.channelseal.com/telemetry/otel. This is an ingest surface ChannelSeal consumes,
+    not an API it serves under OpenAPI.
+- id: agent-skills
+  conforms: true
+  kind: domain-standard
+  evidence: >-
+    docs.channelseal.com/agent-skills publishes 18 SKILL.md skills (13 resource, 5 process) following the
+    agentskills.io specification (YAML frontmatter name/description/requires; curl+jq instructions). The
+    skill pages are behind portal sign-in (Zudoku protectedRoutes /skills/*); see skills/_index.yml.
+- id: openapi-3.1
+  conforms: true
+  evidence: All five published documents declare openapi 3.1.0 and parse; served as text/yaml from docs.channelseal.com/<api>/0.1.0/schema.yaml.
+- id: spring-boot-actuator
+  conforms: true
+  evidence: >-
+    /actuator, /actuator/health, /actuator/info, /actuator/metrics, /actuator/prometheus documented in the
+    Platform and Catalog specs with application/vnd.spring-boot.actuator.v3+json and OpenMetrics /
+    Prometheus text formats; staging.channelseal.com/catalator/actuator/health answered {"status":"UP"} live.
+- id: scim
+  conforms: false
+  evidence: No SCIM schema URNs or /Users /Groups surface.
+- id: json-api
+  conforms: false
+  evidence: Plain JSON resources and Spring Data page envelopes; no JSON:API media type.
+compliance_claims:
+  note: >-
+    Marketing claims only — no trust center, certification report, audit letter or compliance page is
+    published (www.channelseal.com/trust, /security, /compliance all 404; trust./security. subdomains have
+    no DNS). Recorded as claims, not as verified programs; no Compliance pointer is emitted.
+  claims:
+  - id: soc2
+    claim: ready
+    conforms: false
+    evidence: www.channelseal.com homepage — "SOC 2 · HIPAA · GDPR · FTC Safeguards ready"
+  - id: hipaa
+    claim: ready
+    conforms: false
+    evidence: www.channelseal.com homepage — "SOC 2 · HIPAA · GDPR · FTC Safeguards ready"
+  - id: gdpr
+    claim: compliant
+    conforms: false
+    evidence: >-
+      docs.channelseal.com/api-reference#gdpr-compliance — "ChannelSeal is GDPR compliant. For data deletion
+      requests, contact privacy@channelseal.com." Privacy policy (www.channelseal.com/privacy.html) lists
+      access/correction/deletion/portability rights via hello@channelseal.com.
+  - id: ftc-safeguards
+    claim: ready
+    conforms: false
+    evidence: www.channelseal.com homepage — "SOC 2 · HIPAA · GDPR · FTC Safeguards ready"

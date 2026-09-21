@@ -1,0 +1,161 @@
+openapi: 3.1.0
+info:
+  title: API Catalog APIs
+  description: APIs to import API specifications into ChannelSeal platform
+  version: 0.1.0
+  contact:
+    email: support@channelseal.com
+servers:
+  - url: https://api.channelseal.com/catalog
+    description: prod server
+  - url: https://uat.channelseal.com/catalog
+    description: uat server
+  - url: https://staging.channelseal.com/catalog
+    description: staging server
+tags:
+  - name: API Catalog
+    description: API Catalog APIs
+  - name: Monitor
+    description: Monitor
+    externalDocs:
+      description: Spring Boot Actuator Web API Documentation
+      url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
+paths:
+  /v1/api-specifications/import:
+    post:
+      tags:
+        - API Catalog
+      summary: Import API Specification
+      description: |
+        Import an API specification file (Swagger, OpenAPI) along with context. The specification is validated and processed to update the API catalog.
+        ```bash
+         curl --request POST \
+          --url https://uat.channelseal.com/catalog-api/v1/api-specifications/import \
+          --header 'authorization: Bearer ey...' \
+          --header 'content-type: multipart/form-data' \
+          --form apiSpecification=@experian_osha_swagger.yaml \
+          --form 'importContext={
+              "serviceProvider": "experian",
+              "apiType": "VENDOR",
+              "licensed": false,
+              "apiSource": {
+                "source": "https://developer.experian.com",
+                "sourceMethod": "INTEGRATION",
+                "sourceTime": "2026-01-19T21:02:11.033Z"
+              }
+            }'
+        ```
+      operationId: importSpec
+      requestBody:
+        description: | 
+          Multipart form data containing import context and API specification file.
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                importContext:
+                  $ref: '#/components/schemas/ImportContext'
+                apiSpecification:
+                  type: string
+                  format: binary
+              required:
+                - apiSpecification
+                - importContext
+        required: true
+      responses:
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        "202":
+          description: API specification import accepted for processing.
+          content:
+            application/json: {}
+        "400":
+          description: Invalid request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        "500":
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+  /actuator:
+    get:
+      tags:
+        - Monitor
+      summary: Monitor endpoint
+      operationId: links
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: '#/components/schemas/Link'
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: '#/components/schemas/Link'
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: '#/components/schemas/Link'
+  /actuator/health:
+    get:
+      tags:
+        - Monitor
+      summary: Monitor 'health' endpoint
+      operationId: health
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema: {}
+            application/vnd.spring-boot.actuator.v2+json:
+              schema: {}
+            application/json:
+              schema: {}
+components:
+  schemas:
+    ImportContext:
+      type: object
+      properties:
+        serviceProvider:
+          type: string
+        apiType:
+          type: string
+          enum:
+            - PARTNER
+            - PRIVATE
+            - PUBLIC
+            - VENDOR
+        licensed:
+          type: boolean
+    ProblemDetail:
+      $ref: 'channelseal-api-schemas-openapi.yml#/components/schemas/ProblemDetail'
+    Link:
+      $ref: 'channelseal-api-schemas-openapi.yml#/components/schemas/Link'
+    securitySchemes:
+      security_auth:
+        type: oauth2
+        flows:
+          clientCredentials:
+            tokenUrl: https://dev-channelseal.us.auth0.com/oauth/token
+            scopes: {}

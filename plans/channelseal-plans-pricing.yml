@@ -1,0 +1,54 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: ChannelSeal
+providerId: channelseal
+created: '2026-09-20'
+modified: '2026-09-20'
+generated: '2026-09-20'
+method: searched
+source: https://docs.channelseal.com/api-reference#rate-limiting
+tags:
+- API Security
+- AI Agents
+description: >-
+  ChannelSeal publishes no pricing page (www.channelseal.com/pricing and /pricing.html both 404) and sells
+  through an invite-only Founding Customer Program that promises "preferred pricing before GA" (homepage).
+  The only tier ladder anywhere public is the rate-limit table in the API reference, which names Free,
+  Pro and Enterprise tiers by request quota. Those three tiers are recorded here with quota only; no
+  price, currency or billing period is published for any of them.
+sources:
+- https://docs.channelseal.com/api-reference#rate-limiting
+- https://www.channelseal.com/ (Founding Customer Program; "Production ready · Invite only")
+plan_count: 3
+pricing_published: false
+sales_motion: invite-only founding-customer program; contact form / hello@channelseal.com
+plans:
+- id: channelseal-free
+  name: Free
+  type: tier
+  price: null
+  currency: null
+  billing_period: null
+  included:
+    api_requests_per_hour: 100
+  source: https://docs.channelseal.com/api-reference#rate-limiting
+- id: channelseal-pro
+  name: Pro
+  type: tier
+  price: null
+  currency: null
+  billing_period: null
+  included:
+    api_requests_per_hour: 1000
+  source: https://docs.channelseal.com/api-reference#rate-limiting
+- id: channelseal-enterprise
+  name: Enterprise
+  type: tier
+  price: null
+  currency: null
+  billing_period: null
+  included:
+    api_requests_per_hour: custom
+  note: Founding customers "lock in preferred pricing before GA"; 2–4 structured sessions per month with the founders (homepage)
+  source: https://www.channelseal.com/

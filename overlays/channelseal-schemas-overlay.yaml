@@ -1,0 +1,26 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for ChannelSeal API Schemas
+  version: 1.0.0
+extends: openapi/channelseal-api-schemas-openapi.yml
+x-generated: '2026-09-20'
+x-method: generated
+x-source: openapi/channelseal-api-schemas-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist:
+      catalog: https://apis.io/channelseal
+      provider: ChannelSeal
+      maintainer: Kin Lane <kin@apievangelist.com>
+      harvested_from: https://docs.channelseal.com/components/0.1.0/schema.yaml
+      harvested: '2026-09-20'
+      artifacts:
+      - apis.yml
+      - authentication/channelseal-authentication.yml
+      - scopes/channelseal-scopes.yml
+      - errors/channelseal-problem-types.yml
+      - conventions/channelseal-conventions.yml
+      - conformance/channelseal-conformance.yml
+      - data-model/channelseal-data-model.yml
+      - skills/_index.yml

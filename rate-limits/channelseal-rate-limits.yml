@@ -1,0 +1,57 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: ChannelSeal
+providerId: channelseal
+created: '2026-09-20'
+modified: '2026-09-20'
+generated: '2026-09-20'
+method: searched
+source: https://docs.channelseal.com/api-reference#rate-limiting
+tags:
+- Rate Limiting
+- API Security
+description: >-
+  Rate limits are published per pricing tier in the API reference — Free 100 requests/hour, Pro 1,000
+  requests/hour, Enterprise custom — with X-RateLimit-Limit / X-RateLimit-Remaining / X-RateLimit-Reset on
+  every response and Retry-After plus a retry_after problem member on 429. The scope of the limit (per
+  client, per tenant, per endpoint) and burst behaviour are not stated. No tier is priced anywhere public
+  (plans/channelseal-plans-pricing.yml), so the tier names are the only place the Free/Pro/Enterprise
+  ladder is visible.
+sources:
+- https://docs.channelseal.com/api-reference#rate-limiting
+headers:
+  limit: X-RateLimit-Limit
+  remaining: X-RateLimit-Remaining
+  reset: X-RateLimit-Reset
+  retryAfter: Retry-After
+responseCodes:
+  throttled: 429
+throttled_body:
+  media_type: application/problem+json
+  type: https://api.channelseal.com/problems/rate-limit-exceeded
+  extension: retry_after (seconds)
+limit_count: 2
+limits:
+- name: Free tier
+  scope: account
+  metric: requests_per_hour
+  limit: 100
+  timeFrame: hour
+  tier: Free
+- name: Pro tier
+  scope: account
+  metric: requests_per_hour
+  limit: 1000
+  timeFrame: hour
+  tier: Pro
+- name: Enterprise tier
+  scope: account
+  metric: requests_per_hour
+  limit: null
+  timeFrame: hour
+  tier: Enterprise
+  note: Custom limits — negotiated, not published
+notes:
+- The limit scope is not stated; "account" is the docs' implied unit, not a published fact.
+- The docs' worked 429 example shows X-RateLimit-Limit 1000 with retry_after 1800.

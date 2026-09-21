@@ -1,0 +1,58 @@
+generated: '2026-09-20'
+method: searched
+source: >-
+  docs.channelseal.com/api-reference (#base-url, #changelog, #support), the five OpenAPI documents
+  (info.version 0.1.0, servers[] prod/uat/staging, no deprecated flags), the docs portal's own route
+  scheme (/<api>/0.1.0/schema.yaml), live probes of every servers[] host on 2026-09-20, and the
+  channelseal.github.io blog feed.
+versioning:
+  scheme: uri-path
+  current: v1
+  spec_version: 0.1.0
+  mechanism: >-
+    Path segment — /api/v1/... on the Platform, Discovery and Data Classification APIs, /v1/... on the
+    Catalog API — beneath a per-capability base (/platform, /catalog). The portal additionally versions
+    each document at /<api>/0.1.0/schema.yaml with Zudoku's version selector enabled ("if-available"),
+    so a second version would appear there first.
+  docs: https://docs.channelseal.com/api-reference#base-url
+  notes: No versioning policy, support window or backwards-compatibility promise is published.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  notes: No deprecation policy published; no operation is flagged deprecated in any spec.
+sla:
+  url: null
+  public_uptime_target: null
+  notes: No SLA published. Platform is "Production ready · Invite only" (homepage) with a Founding Customer Program instead of general availability.
+status_page: null
+status_page_notes: >-
+  The docs source keeps a status.channelseal.com link and a community.channelseal.com link commented out;
+  neither hostname has a DNS record on 2026-09-20.
+environments:
+- name: production
+  base: https://api.channelseal.com/{platform|catalog}
+  documented: true
+  observed: NXDOMAIN on 2026-09-20 — the host named in every spec and in the docs does not resolve
+- name: uat
+  base: https://uat.channelseal.com/{platform|catalog}
+  documented: true
+  observed: resolves to channelseal-uat.westus2.cloudapp.azure.com; TCP connect timed out from our vantage
+- name: staging
+  base: https://staging.channelseal.com/{platform|catalog}
+  documented: servers[] only
+  observed: >-
+    live Spring Boot deployment — /catalog/actuator/health 200 {"status":"UP"}, /platform/actuator/health
+    503 {"status":"OUT_OF_SERVICE"}, /platform/v3/api-docs and /platform/api/v1/apis 401 (bearer enforced)
+changelog: changelog/channelseal-changelog.yml
+changelog_url: https://docs.channelseal.com/api-reference#changelog
+release_history:
+- version: 0.1.0
+  date: '2026-02-11'
+  note: Initial API release (docs changelog)
+- date: '2026-07-21'
+  note: docs portal last modified (Zudoku lastModifiedTime on every page) — Agent Skills section added
+- date: '2026-05-03'
+  note: last push to github.com/channelseal/integrations (alpha, "breaking changes expected")
+deprecated_operations: []
+rate_limits: rate-limits/channelseal-rate-limits.yml

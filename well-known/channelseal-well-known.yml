@@ -1,0 +1,126 @@
+generated: '2026-09-20'
+method: searched
+description: >-
+  Results of probing the /.well-known/ discovery surface on every host this record knows: the registrable
+  domain and www, the docs/portal host, every OpenAPI servers[] host (api, uat, staging), and the OAuth
+  authorization server the specs and docs name (the Auth0 tenant dev-channelseal.us.auth0.com). Status is
+  the HTTP code observed at fetch time on 2026-09-20. channelseal.com 301s every path to www, which 404s
+  them all. api.channelseal.com — the production host named in every spec and in the docs — did not
+  resolve in DNS (recorded as status 0). uat.channelseal.com resolves (Azure westus2) but timed out.
+  staging.channelseal.com answers 200 text/html with a single-page-app shell for EVERY /.well-known/
+  path, so those are recorded as present-but-not-a-document and not saved. The only real documents on
+  this surface are the OIDC discovery and OAuth 2.0 authorization-server metadata served by the
+  provider's own Auth0 tenant, which is the issuer named as tokenUrl in the OpenAPI securitySchemes and
+  in the docs; both were saved verbatim. No security.txt, api-catalog, ai-plugin, apis.json, agent card,
+  UCP, ACP or AAuth document is served by any ChannelSeal host.
+hosts:
+- host: https://channelseal.com
+  note: 301 to https://www.channelseal.com/ for every path
+  documents:
+  - {path: /.well-known/security.txt, status: 301}
+  - {path: /.well-known/openid-configuration, status: 301}
+  - {path: /.well-known/oauth-authorization-server, status: 301}
+  - {path: /.well-known/oauth-protected-resource, status: 301}
+  - {path: /.well-known/api-catalog, status: 301}
+  - {path: /.well-known/ai-plugin.json, status: 301}
+  - {path: /.well-known/apis.json, status: 301}
+  - {path: /.well-known/agent-card.json, status: 301}
+  - {path: /.well-known/agent.json, status: 301}
+- host: https://www.channelseal.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/apis.json, status: 404}
+  - {path: /apis.json, status: 404}
+  - {path: /apis.yml, status: 404}
+  - {path: /.well-known/ucp.json, status: 404}
+  - {path: /.well-known/acp.json, status: 404}
+  - {path: /.well-known/aauth-resource.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /.well-known/mcp.json, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: https://docs.channelseal.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/apis.json, status: 404}
+  - {path: /apis.json, status: 404}
+  - {path: /apis.yml, status: 404}
+  - {path: /.well-known/ucp.json, status: 404}
+  - {path: /.well-known/acp.json, status: 404}
+  - {path: /.well-known/aauth-resource.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /.well-known/mcp.json, status: 404}
+  - {path: /llms.txt, status: 404}
+  - {path: /llms-full.txt, status: 404}
+- host: https://api.channelseal.com
+  note: production host named in every OpenAPI servers[] and in the docs; NXDOMAIN on 2026-09-20 (no A/AAAA record)
+  documents:
+  - {path: /.well-known/security.txt, status: 0}
+  - {path: /.well-known/openid-configuration, status: 0}
+  - {path: /.well-known/oauth-authorization-server, status: 0}
+  - {path: /.well-known/oauth-protected-resource, status: 0}
+  - {path: /.well-known/api-catalog, status: 0}
+  - {path: /.well-known/ai-plugin.json, status: 0}
+  - {path: /.well-known/apis.json, status: 0}
+  - {path: /.well-known/agent-card.json, status: 0}
+  - {path: /.well-known/agent.json, status: 0}
+- host: https://uat.channelseal.com
+  note: resolves to channelseal-uat.westus2.cloudapp.azure.com (20.51.118.20); TCP connect timed out on 443 and 80
+  documents:
+  - {path: /.well-known/security.txt, status: 0}
+  - {path: /.well-known/openid-configuration, status: 0}
+  - {path: /.well-known/oauth-authorization-server, status: 0}
+  - {path: /.well-known/oauth-protected-resource, status: 0}
+  - {path: /.well-known/api-catalog, status: 0}
+  - {path: /.well-known/ai-plugin.json, status: 0}
+  - {path: /.well-known/apis.json, status: 0}
+  - {path: /.well-known/agent-card.json, status: 0}
+  - {path: /.well-known/agent.json, status: 0}
+- host: https://staging.channelseal.com
+  note: >-
+    SPA catch-all — every path below answered 200 text/html (1,703-byte app shell), not a document; treated
+    as a miss. The same host does run the real Spring Boot services (/catalog/actuator/health 200 UP,
+    /platform/actuator/health 503 OUT_OF_SERVICE, /platform/v3/api-docs and /platform/api/v1/apis 401).
+  documents:
+  - {path: /.well-known/security.txt, status: 200, type: text/html, document: false}
+  - {path: /.well-known/openid-configuration, status: 200, type: text/html, document: false}
+  - {path: /.well-known/oauth-authorization-server, status: 200, type: text/html, document: false}
+  - {path: /.well-known/oauth-protected-resource, status: 200, type: text/html, document: false}
+  - {path: /.well-known/api-catalog, status: 200, type: text/html, document: false}
+  - {path: /.well-known/ai-plugin.json, status: 200, type: text/html, document: false}
+  - {path: /.well-known/apis.json, status: 200, type: text/html, document: false}
+  - {path: /.well-known/agent-card.json, status: 200, type: text/html, document: false}
+  - {path: /.well-known/agent.json, status: 200, type: text/html, document: false}
+  - {path: /.well-known/mcp.json, status: 200, type: text/html, document: false}
+- host: https://dev-channelseal.us.auth0.com
+  role: authorization server (issuer) — the tokenUrl named in openapi/channelseal-api-schemas-openapi.yml securitySchemes and in docs.channelseal.com/api-reference#authentication; Auth0-hosted tenant owned by the provider
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    type: application/json
+    file: channelseal-auth0-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    type: application/json
+    file: channelseal-auth0-oauth-authorization-server.json
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/apis.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /.well-known/ucp.json, status: 404}
+  - {path: /.well-known/acp.json, status: 404}
+  - {path: /.well-known/aauth-resource.json, status: 404}

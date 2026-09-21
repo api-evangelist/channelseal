@@ -1,0 +1,80 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for ChannelSeal API Catalog API
+  version: 1.0.0
+extends: openapi/channelseal-api-catalog-api-openapi.yml
+x-generated: '2026-09-20'
+x-method: generated
+x-source: openapi/channelseal-api-catalog-api-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist:
+      catalog: https://apis.io/channelseal
+      provider: ChannelSeal
+      maintainer: Kin Lane <kin@apievangelist.com>
+      harvested_from: https://docs.channelseal.com/catalog/0.1.0/schema.yaml
+      harvested: '2026-09-20'
+      artifacts:
+      - apis.yml
+      - authentication/channelseal-authentication.yml
+      - scopes/channelseal-scopes.yml
+      - errors/channelseal-problem-types.yml
+      - conventions/channelseal-conventions.yml
+      - conformance/channelseal-conformance.yml
+      - data-model/channelseal-data-model.yml
+      - skills/_index.yml
+- target: $
+  description: Relative $refs in the harvested document point at components.yaml (the portal build path); the working
+    copy in openapi/ rewrites that prefix to channelseal-api-schemas-openapi.yml so the refs resolve on disk. openapi/_original/
+    keeps the verbatim file.
+  update:
+    x-apievangelist-ref-rewrite:
+      from: components.yaml#/components/
+      to: channelseal-api-schemas-openapi.yml#/components/
+- target: $.components
+  description: The provider declares its OAuth2 scheme under components.schemas.securitySchemes (a schema named
+    securitySchemes) instead of components.securitySchemes, and applies no security[] requirement, so tooling reads
+    every operation as anonymous. Mirror the scheme from the shared components document and apply it globally, as
+    the docs require (docs.channelseal.com/api-reference#authentication).
+  update:
+    securitySchemes:
+      security_auth:
+        type: oauth2
+        description: OAuth 2.0 client credentials via Auth0; audience https://api.channelseal.com; scopes read,
+          write, delete, admin (docs.channelseal.com/api-reference#available-scopes)
+        flows:
+          clientCredentials:
+            tokenUrl: https://dev-channelseal.us.auth0.com/oauth/token
+            scopes:
+              read: Read access to resources
+              write: Create and update resources
+              delete: Delete resources
+              admin: Full administrative access
+- target: $
+  update:
+    security:
+    - security_auth:
+      - read
+- target: $.paths.*['get','post','put','delete'].responses
+  description: Docs publish 401 (invalid/expired token), 403 (insufficient scope) and 429 (rate limit) problem responses
+    that the spec omits (errors/channelseal-problem-types.yml).
+  update:
+    '401':
+      description: Unauthorized — invalid or missing access token
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+    '403':
+      description: Forbidden — insufficient permissions / scope
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+    '429':
+      description: Too Many Requests — rate limit exceeded; honour Retry-After
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'

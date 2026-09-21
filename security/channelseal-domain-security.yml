@@ -1,0 +1,20 @@
+generated: '2026-09-20'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.channelseal.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov  1 09:27:21 2026 GMT
+  hsts: false
+- host: api.channelseal.com
+  https: false
+- host: uat.channelseal.com
+  https: false
+domains:
+- domain: channelseal.com
+  dnssec: true
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: none

@@ -1,0 +1,46 @@
+generated: '2026-09-20'
+method: searched
+source: openapi/channelseal-api-schemas-openapi.yml
+docs: https://docs.channelseal.com/api-reference#available-scopes
+description: >-
+  The OpenAPI declares a single oauth2 clientCredentials scheme (security_auth) with an EMPTY scopes map,
+  and no operation carries a security[] requirement, so the derived baseline had zero scopes. The docs'
+  Authentication section publishes four coarse scopes requested at the Auth0 token endpoint with
+  audience https://api.channelseal.com; the provider's own OpenTelemetry collector integration
+  (github.com/channelseal/integrations) requests a fifth, import:telemetry, against audience
+  https://telemetry.channelseal.com. Scope-to-operation mapping is not published; the docs' 403 example
+  shows the server naming a required scope in the problem detail ("Required scope: 'admin'").
+schemes:
+- name: security_auth
+  source: openapi/channelseal-api-schemas-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://dev-channelseal.us.auth0.com/oauth/token
+    audience: https://api.channelseal.com
+    issuer: https://dev-channelseal.us.auth0.com/
+    discovery: well-known/channelseal-auth0-oauth-authorization-server.json
+scopes:
+- scope: read
+  description: Read access to resources
+  flows: [clientCredentials]
+  sources: [https://docs.channelseal.com/api-reference#available-scopes]
+- scope: write
+  description: Create and update resources
+  flows: [clientCredentials]
+  sources: [https://docs.channelseal.com/api-reference#available-scopes]
+- scope: delete
+  description: Delete resources
+  flows: [clientCredentials]
+  sources: [https://docs.channelseal.com/api-reference#available-scopes]
+- scope: admin
+  description: Full administrative access
+  flows: [clientCredentials]
+  sources: [https://docs.channelseal.com/api-reference#available-scopes]
+- scope: import:telemetry
+  description: Export OTLP logs/traces of HTTP API traffic into ChannelSeal via the OpenTelemetry Collector otlphttp exporter (audience https://telemetry.channelseal.com)
+  flows: [clientCredentials]
+  sources: [https://github.com/channelseal/integrations/blob/main/otlp-collector/otel-collector-config.yaml]
+notes:
+- Multiple scopes are space-separated in the token request ("scope=read write delete").
+- The docs' example token request sends client_id/client_secret in a JSON body to the Auth0 /oauth/token endpoint; the JavaScript example sends them as URL-encoded form fields with a JSON content-type header — the two examples disagree.
+- The docs portal itself (Zudoku) signs users in against the same Auth0 tenant with scopes openid profile email custom_scope; that is portal login, not an API scope set.

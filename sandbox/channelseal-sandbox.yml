@@ -1,0 +1,38 @@
+generated: '2026-09-20'
+method: searched
+source: >-
+  https://docs.channelseal.com/api-reference#base-url, https://docs.channelseal.com/agent-skills#set-the-environment-variables,
+  servers[] in openapi/*.yml, the OTLP collector env.template in github.com/channelseal/integrations, and
+  live probes on 2026-09-20.
+description: >-
+  ChannelSeal separates environments by host rather than by key prefix or a test-mode flag: the docs
+  name a UAT environment (uat.channelseal.com) alongside production (api.channelseal.com) for every
+  capability, and the specs add a staging host. The same Auth0 client-credentials flow and the same
+  scopes are used against every environment (only the audience/base URL changes), so there is no
+  test-vs-live credential separation to record. No test fixtures, magic values, test clocks or trigger
+  tooling are published; the docs portal's in-browser playground (Zudoku, playground enabled) sits behind
+  portal sign-in.
+test_vs_live:
+  separation: by host (environment), not by key prefix or mode flag
+  environments:
+  - name: production
+    base_url: https://api.channelseal.com/{platform|catalog}
+    documented: https://docs.channelseal.com/api-reference#base-url
+    observed_2026-09-20: NXDOMAIN
+  - name: uat
+    base_url: https://uat.channelseal.com/{platform|catalog}
+    documented: https://docs.channelseal.com/api-reference#base-url ("env would be api for production and uat for UAT")
+    telemetry_ingest: https://uat.channelseal.com/telemetry/otel (EXPORTER_ENDPOINT in integrations/otlp-collector/env.template)
+    observed_2026-09-20: DNS resolves (Azure westus2); TCP connect timed out
+  - name: staging
+    base_url: https://staging.channelseal.com/{platform|catalog}
+    documented: servers[] in every OpenAPI document only
+    observed_2026-09-20: live — /catalog/actuator/health UP, /platform/actuator/health OUT_OF_SERVICE, API routes 401 without a token
+  credentials: same OAuth2 client (ChannelSeal Portal → Settings → API Credentials) and same Auth0 token endpoint for every environment
+test_values: []
+test_clocks: false
+fixtures_or_triggers: false
+playground:
+  url: https://docs.channelseal.com/platform
+  kind: Zudoku API playground (disablePlayground false)
+  access: portal sign-in required (protectedRoutes /platform/*, /catalog/*, /api-discovery/*, /data-classification/*, /components/*)

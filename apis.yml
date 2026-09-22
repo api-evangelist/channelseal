@@ -18,6 +18,10 @@ x-tier-reason: enrichment pass 2026-09-20 (local-v3; was harvest)
 specificationVersion: '0.20'
 created: '2026-09-20'
 modified: '2026-09-20'
+x-docs-platform: zudoku
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-09-21
+x-docs-hosting: github-pages
 tags:
 - Company
 - API Security

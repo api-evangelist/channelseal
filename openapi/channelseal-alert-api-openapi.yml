@@ -1,0 +1,238 @@
+openapi: 3.2.0
+info:
+  title: Platform Alert API
+  description: APIs for platform resources including alerts, applications, NHIs, channels, service providers, etc.
+  version: 0.1.0
+  contact:
+    email: support@channelseal.com
+servers:
+- url: https://api.channelseal.com/platform
+  description: prod server
+- url: https://uat.channelseal.com/platform
+  description: uat server
+- url: https://staging.channelseal.com/platform
+  description: staging server
+tags:
+- name: Alert
+  description: Alert API
+paths:
+  /api/v1/alerts/{id}:
+    get:
+      tags:
+      - Alert
+      summary: Get alert
+      operationId: getAlertById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Resource not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+    put:
+      tags:
+      - Alert
+      summary: Update alert
+      operationId: updateAlert
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Alert'
+        required: true
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+        '400':
+          description: Invalid request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Resource not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+    delete:
+      tags:
+      - Alert
+      summary: Delete alert
+      operationId: deleteAlert
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: hard
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '204':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Resource not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+  /api/v1/alerts:
+    get:
+      tags:
+      - Alert
+      summary: Get all alerts
+      operationId: getAlerts
+      parameters:
+      - name: severity
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - INFO
+          - LOW
+          - MEDIUM
+          - HIGH
+          - CRITICAL
+      - name: id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: timestamp
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertPagedModel'
+        '400':
+          description: Invalid request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+    delete:
+      tags:
+      - Alert
+      summary: Delete all alerts
+      operationId: deleteAlerts
+      parameters:
+      - name: id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: hard
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+components:
+  schemas:
+    Alert:
+      $ref: components.yaml#/components/schemas/Alert
+    Pageable:
+      $ref: components.yaml#/components/schemas/Pageable
+    ProblemDetail:
+      $ref: components.yaml#/components/schemas/ProblemDetail
+    AlertPagedModel:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alert'
+        page:
+          $ref: components.yaml#/components/schemas/PageMetadata

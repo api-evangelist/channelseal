@@ -35,66 +35,10 @@ tags:
 - OpenTelemetry
 - Governance
 apis:
-- aid: channelseal:platform-api
-  name: ChannelSeal Platform API
-  description: Platform resources behind the ChannelSeal Interface Scorecard — services, service providers,
-    channels (HTTP paths, Kafka topics, queues), applications, non-human identities (API keys, client IDs,
-    service accounts, X.509 fingerprints), sensitive data elements, alerts, CloudEvents-shaped audit events,
-    dashboard discovery metrics, and Spring Boot Actuator health/metrics endpoints. OpenAPI 3.1.0, version
-    0.1.0, 56 operations over 32 paths, RFC 9457 application/problem+json errors, Spring Data page/size/sort
-    pagination.
-  humanURL: https://docs.channelseal.com/platform
-  baseURL: https://api.channelseal.com/platform
-  tags:
-  - Alerts
-  - Application
-  - Channels
-  - Non-Human Identity
-  - Sensitive Data
-  - Audit Events
-  - Service Providers
-  - Monitoring
-  tags_raw:
-  - Alerts
-  - Applications
-  - Channels
-  - Non-Human Identity
-  - Sensitive Data
-  - Audit Events
-  - Service Providers
-  - Monitoring
-  properties:
-  - type: OpenAPI
-    url: openapi/channelseal-platform-api-openapi.yml
-  - type: OpenAPI
-    name: Provider-hosted spec (docs portal schema route)
-    url: https://docs.channelseal.com/platform/0.1.0/schema.yaml
-  - type: OpenAPI
-    name: Shared schema components (ChannelSeal API Schemas)
-    url: openapi/channelseal-api-schemas-openapi.yml
-  - type: Documentation
-    url: https://docs.channelseal.com/platform
-- aid: channelseal:api-discovery-service-api
-  name: ChannelSeal API Discovery Service API
-  description: Discover and manage API registry entries — get, list, search, update and delete discovered or
-    registered API specifications (OpenAPI, AsyncAPI, GraphQL, WSDL, gRPC and others) with their security
-    scheme, ownership, source and service-provider metadata. OpenAPI 3.1.0, version 0.1.0, 6 operations.
-  humanURL: https://docs.channelseal.com/api-discovery
-  baseURL: https://api.channelseal.com/platform
-  tags:
-  - API Discovery
-  - API Registry
-  properties:
-  - type: OpenAPI
-    url: openapi/channelseal-api-discovery-service-api-openapi.yml
-  - type: OpenAPI
-    name: Provider-hosted spec (docs portal schema route)
-    url: https://docs.channelseal.com/api-discovery/0.1.0/schema.yaml
-  - type: Documentation
-    url: https://docs.channelseal.com/api-discovery
 - aid: channelseal:api-catalog-api
   name: ChannelSeal API Catalog API
-  description: Import API specifications into the ChannelSeal platform (POST /v1/api-specifications/import with an
+  description: >-
+    Import API specifications into the ChannelSeal platform (POST /v1/api-specifications/import with an
     ImportContext), plus Spring Boot Actuator health for the catalog service. OpenAPI 3.1.0, version 0.1.0,
     3 operations. Served from a separate /catalog capability path.
   humanURL: https://docs.channelseal.com/catalog
@@ -110,23 +54,229 @@ apis:
     url: https://docs.channelseal.com/catalog/0.1.0/schema.yaml
   - type: Documentation
     url: https://docs.channelseal.com/catalog
-- aid: channelseal:data-classification-api
-  name: ChannelSeal Data Classification API
-  description: Manage the data-classification vocabulary the scorecard scores against — sensitive info types
-    (data type, format, pattern match, jurisdiction, risk), sensitive info groups (PII, Financial, Health) and
-    classification levels within a scheme. OpenAPI 3.1.0, version 0.1.0, 19 operations over 7 paths.
-  humanURL: https://docs.channelseal.com/data-classification
+- aid: channelseal:channelseal-alert-api
+  name: ChannelSeal Alert API
+  description: Alert API
+  humanURL: https://docs.channelseal.com/platform
   baseURL: https://api.channelseal.com/platform
   tags:
-  - Data Classification
-  - Sensitive Data
-  - PII
+  - Alert
   properties:
   - type: OpenAPI
-    url: openapi/channelseal-data-classification-api-openapi.yml
+    url: openapi/channelseal-alert-api-openapi.yml
+  - type: Documentation
+    url: https://docs.channelseal.com/platform
+  - type: Documentation
+    url: https://docs.channelseal.com/api-discovery
+  - type: Documentation
+    url: https://docs.channelseal.com/data-classification
+- aid: channelseal:channelseal-apis-api
+  name: ChannelSeal APIs API
+  description: The Apis API from ChannelSeal — 3 operation(s) for apis.
+  humanURL: https://docs.channelseal.com/platform
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - Apis
+  properties:
   - type: OpenAPI
-    name: Provider-hosted spec (docs portal schema route)
-    url: https://docs.channelseal.com/data-classification/0.1.0/schema.yaml
+    url: openapi/channelseal-apis-api-openapi.yml
+  - type: Documentation
+    url: https://docs.channelseal.com/platform
+  - type: Documentation
+    url: https://docs.channelseal.com/api-discovery
+  - type: Documentation
+    url: https://docs.channelseal.com/data-classification
+- aid: channelseal:channelseal-application-api
+  name: ChannelSeal Application API
+  description: Application API
+  humanURL: https://docs.channelseal.com/platform
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - Application
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-application-api-openapi.yml
+  - type: Documentation
+    url: https://docs.channelseal.com/platform
+  - type: Documentation
+    url: https://docs.channelseal.com/api-discovery
+  - type: Documentation
+    url: https://docs.channelseal.com/data-classification
+- aid: channelseal:channelseal-auditevent-api
+  name: ChannelSeal Audit Event API
+  description: AuditEvent API
+  humanURL: https://docs.channelseal.com/platform
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - AuditEvent
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-auditevent-api-openapi.yml
+  - type: Documentation
+    url: https://docs.channelseal.com/platform
+  - type: Documentation
+    url: https://docs.channelseal.com/api-discovery
+  - type: Documentation
+    url: https://docs.channelseal.com/data-classification
+- aid: channelseal:channelseal-channel-api
+  name: ChannelSeal Channel API
+  description: Channel API
+  humanURL: https://docs.channelseal.com/platform
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - Channel
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-channel-api-openapi.yml
+  - type: Documentation
+    url: https://docs.channelseal.com/platform
+  - type: Documentation
+    url: https://docs.channelseal.com/api-discovery
+  - type: Documentation
+    url: https://docs.channelseal.com/data-classification
+- aid: channelseal:channelseal-classification-api
+  name: ChannelSeal Classification API
+  description: Classification API
+  humanURL: https://docs.channelseal.com/platform
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - Classification
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-classification-api-openapi.yml
+  - type: Documentation
+    url: https://docs.channelseal.com/platform
+  - type: Documentation
+    url: https://docs.channelseal.com/api-discovery
+  - type: Documentation
+    url: https://docs.channelseal.com/data-classification
+- aid: channelseal:channelseal-monitor-api
+  name: ChannelSeal Monitor API
+  description: Monitor
+  humanURL: https://docs.channelseal.com/platform
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - Monitor
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-monitor-api-openapi.yml
+  - type: Documentation
+    url: https://docs.channelseal.com/platform
+  - type: Documentation
+    url: https://docs.channelseal.com/api-discovery
+  - type: Documentation
+    url: https://docs.channelseal.com/data-classification
+- aid: channelseal:channelseal-non-human-identity-api
+  name: ChannelSeal Non Human Identity API
+  description: Non Human Identity API
+  humanURL: https://docs.channelseal.com/platform
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - Non Human Identity
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-non-human-identity-api-openapi.yml
+  - type: Documentation
+    url: https://docs.channelseal.com/platform
+  - type: Documentation
+    url: https://docs.channelseal.com/api-discovery
+  - type: Documentation
+    url: https://docs.channelseal.com/data-classification
+- aid: channelseal:channelseal-sensitive-data-element-api
+  name: ChannelSeal Sensitive Data Element API
+  description: Sensitive Data Element API
+  humanURL: https://docs.channelseal.com/platform
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - Sensitive Data Element
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-sensitive-data-element-api-openapi.yml
+  - type: Documentation
+    url: https://docs.channelseal.com/platform
+  - type: Documentation
+    url: https://docs.channelseal.com/api-discovery
+  - type: Documentation
+    url: https://docs.channelseal.com/data-classification
+- aid: channelseal:channelseal-sensitive-info-group-api
+  name: ChannelSeal Sensitive Info Group API
+  description: Sensitive Info Group API
+  humanURL: https://docs.channelseal.com/platform
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - Sensitive Info Group
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-sensitive-info-group-api-openapi.yml
+  - type: Documentation
+    url: https://docs.channelseal.com/platform
+  - type: Documentation
+    url: https://docs.channelseal.com/api-discovery
+  - type: Documentation
+    url: https://docs.channelseal.com/data-classification
+- aid: channelseal:channelseal-sensitive-info-type-api
+  name: ChannelSeal Sensitive Info Type API
+  description: Sensitive Info Type API
+  humanURL: https://docs.channelseal.com/platform
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - Sensitive Info Type
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-sensitive-info-type-api-openapi.yml
+  - type: Documentation
+    url: https://docs.channelseal.com/platform
+  - type: Documentation
+    url: https://docs.channelseal.com/api-discovery
+  - type: Documentation
+    url: https://docs.channelseal.com/data-classification
+- aid: channelseal:channelseal-service-api
+  name: ChannelSeal Service API
+  description: Service API
+  humanURL: https://docs.channelseal.com/platform
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - Service
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-service-api-openapi.yml
+  - type: Documentation
+    url: https://docs.channelseal.com/platform
+  - type: Documentation
+    url: https://docs.channelseal.com/api-discovery
+  - type: Documentation
+    url: https://docs.channelseal.com/data-classification
+- aid: channelseal:channelseal-service-provider-api
+  name: ChannelSeal Service Provider API
+  description: Service Provider API
+  humanURL: https://docs.channelseal.com/platform
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - Service Provider
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-service-provider-api-openapi.yml
+  - type: Documentation
+    url: https://docs.channelseal.com/platform
+  - type: Documentation
+    url: https://docs.channelseal.com/api-discovery
+  - type: Documentation
+    url: https://docs.channelseal.com/data-classification
+- aid: channelseal:channelseal-summary-discovery-metrics-api
+  name: ChannelSeal Summary Discovery Metrics API
+  description: >-
+    The Summary Discovery Metrics API from ChannelSeal — 1 operation(s) for summary discovery metrics.
+  humanURL: https://docs.channelseal.com/platform
+  baseURL: https://api.channelseal.com/platform
+  tags:
+  - Summary Discovery Metrics
+  properties:
+  - type: OpenAPI
+    url: openapi/channelseal-summary-discovery-metrics-api-openapi.yml
+  - type: Documentation
+    url: https://docs.channelseal.com/platform
+  - type: Documentation
+    url: https://docs.channelseal.com/api-discovery
   - type: Documentation
     url: https://docs.channelseal.com/data-classification
 maintainers:

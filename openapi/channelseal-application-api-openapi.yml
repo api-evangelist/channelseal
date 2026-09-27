@@ -1,0 +1,368 @@
+openapi: 3.2.0
+info:
+  title: Platform Application API
+  description: APIs for platform resources including alerts, applications, NHIs, channels, service providers, etc.
+  version: 0.1.0
+  contact:
+    email: support@channelseal.com
+servers:
+- url: https://api.channelseal.com/platform
+  description: prod server
+- url: https://uat.channelseal.com/platform
+  description: uat server
+- url: https://staging.channelseal.com/platform
+  description: staging server
+tags:
+- name: Application
+  description: Application API
+paths:
+  /api/v1/applications/{id}:
+    get:
+      tags:
+      - Application
+      summary: Get application
+      operationId: getApplicationById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Resource not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+    put:
+      tags:
+      - Application
+      summary: Update application
+      operationId: updateApplication
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Application'
+        required: true
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '400':
+          description: Invalid request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Resource not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+    delete:
+      tags:
+      - Application
+      summary: Delete application
+      operationId: deleteApplication
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Resource not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+  /api/v1/applications:
+    get:
+      tags:
+      - Application
+      summary: Get all applications
+      operationId: getApplications
+      parameters:
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: domain
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: businessOwnerName
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: technicalOwnerName
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: infoTypeId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: infoGroupId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: classificationId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: sortBy
+        in: query
+        required: false
+        schema:
+          type: string
+          default: updatedAt
+      - name: sortOrder
+        in: query
+        required: false
+        schema:
+          type: string
+          default: DESC
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationPagedModel'
+        '400':
+          description: Invalid request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+    post:
+      tags:
+      - Application
+      summary: Create application
+      operationId: createApplication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Application'
+        required: true
+      responses:
+        '201':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '400':
+          description: Invalid request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+    delete:
+      tags:
+      - Application
+      summary: Delete all applications
+      operationId: deleteAllApplications
+      parameters:
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: domain
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: businessOwnerName
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: technicalOwnerName
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+  /api/v1/applications/{id}/non-human-identities:
+    get:
+      tags:
+      - Application
+      summary: Get associated NHIs from Application
+      operationId: getNhisFromApplicationId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: sortBy
+        in: query
+        required: false
+        schema:
+          type: string
+          default: updatedAt
+      - name: sortOrder
+        in: query
+        required: false
+        schema:
+          type: string
+          default: DESC
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NonHumanIdentityPagedModel'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Resource not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+components:
+  schemas:
+    NonHumanIdentity:
+      $ref: components.yaml#/components/schemas/NonHumanIdentity
+    ApplicationPagedModel:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+        page:
+          $ref: components.yaml#/components/schemas/PageMetadata
+    Application:
+      $ref: components.yaml#/components/schemas/Application
+    ProblemDetail:
+      $ref: components.yaml#/components/schemas/ProblemDetail
+    NonHumanIdentityPagedModel:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/NonHumanIdentity'
+        page:
+          $ref: components.yaml#/components/schemas/PageMetadata

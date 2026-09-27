@@ -1,0 +1,55 @@
+{
+  "provider": "channelseal",
+  "sources": [
+    "_original/channelseal-api-catalog-api-openapi-original.yml",
+    "_original/channelseal-api-discovery-service-api-openapi-original.yml",
+    "_original/channelseal-data-classification-api-openapi-original.yml",
+    "_original/channelseal-platform-api-openapi-original.yml"
+  ],
+  "outputs": [
+    "channelseal-api-catalog-api-openapi.yml",
+    "channelseal-monitor-api-openapi.yml",
+    "channelseal-apis-api-openapi.yml",
+    "channelseal-classification-api-openapi.yml",
+    "channelseal-sensitive-info-group-api-openapi.yml",
+    "channelseal-sensitive-info-type-api-openapi.yml",
+    "channelseal-alert-api-openapi.yml",
+    "channelseal-application-api-openapi.yml",
+    "channelseal-auditevent-api-openapi.yml",
+    "channelseal-channel-api-openapi.yml",
+    "channelseal-non-human-identity-api-openapi.yml",
+    "channelseal-sensitive-data-element-api-openapi.yml",
+    "channelseal-service-api-openapi.yml",
+    "channelseal-service-provider-api-openapi.yml",
+    "channelseal-summary-discovery-metrics-api-openapi.yml"
+  ],
+  "archived": [
+    "deleted 3 superseded output(s) from the previous generation"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (4 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "channelseal-api-catalog-api-openapi-original.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "channelseal-api-discovery-service-api-openapi-original.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "channelseal-api-discovery-service-api-openapi-original.yml: tagged paths GET /api/v1/apis/{id} -> Apis",
+    "channelseal-api-discovery-service-api-openapi-original.yml: tagged paths PUT /api/v1/apis/{id} -> Apis",
+    "channelseal-api-discovery-service-api-openapi-original.yml: tagged paths DELETE /api/v1/apis/{id} -> Apis",
+    "channelseal-api-discovery-service-api-openapi-original.yml: tagged paths GET /api/v1/apis -> Apis",
+    "channelseal-api-discovery-service-api-openapi-original.yml: tagged paths DELETE /api/v1/apis -> Apis",
+    "channelseal-api-discovery-service-api-openapi-original.yml: tagged paths GET /api/v1/apis/search -> Apis",
+    "channelseal-api-discovery-service-api-openapi-original.yml: declared missing tag: Apis",
+    "channelseal-data-classification-api-openapi-original.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "channelseal-platform-api-openapi-original.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "channelseal-platform-api-openapi-original.yml: declared missing tag: Summary Discovery Metrics",
+    "tag 'Monitor' spans 2 source specs (channelseal-api-catalog-api-openapi-original.yml, channelseal-platform-api-openapi-original.yml): per-path servers applied",
+    "superseded outputs removed: channelseal-api-discovery-service-api-openapi.yml, channelseal-data-classification-api-openapi.yml, channelseal-platform-api-openapi.yml",
+    "apis.yml register: written (+14 apis, 15 total)"
+  ],
+  "skipped": [
+    "channelseal-api-catalog-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "channelseal-api-discovery-service-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "channelseal-data-classification-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "channelseal-platform-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

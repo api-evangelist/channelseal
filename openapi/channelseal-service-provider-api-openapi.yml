@@ -1,0 +1,301 @@
+openapi: 3.2.0
+info:
+  title: Platform Service Provider API
+  description: APIs for platform resources including alerts, applications, NHIs, channels, service providers, etc.
+  version: 0.1.0
+  contact:
+    email: support@channelseal.com
+servers:
+- url: https://api.channelseal.com/platform
+  description: prod server
+- url: https://uat.channelseal.com/platform
+  description: uat server
+- url: https://staging.channelseal.com/platform
+  description: staging server
+tags:
+- name: Service Provider
+  description: Service Provider API
+paths:
+  /api/v1/serviceproviders/{id}:
+    get:
+      tags:
+      - Service Provider
+      summary: Get service provider
+      operationId: getServiceProviderById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceProvider'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Resource not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+    put:
+      tags:
+      - Service Provider
+      summary: Update service provider
+      operationId: updateServiceProvider
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceProvider'
+        required: true
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceProvider'
+        '400':
+          description: Invalid request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Resource not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+    delete:
+      tags:
+      - Service Provider
+      summary: Delete service provider
+      operationId: deleteServiceProvider
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Resource not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+  /api/v1/serviceproviders:
+    get:
+      tags:
+      - Service Provider
+      summary: Get all service providers
+      operationId: getAllServiceProviders
+      parameters:
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: infoTypeId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: infoGroupId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: classificationId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: sortBy
+        in: query
+        required: false
+        schema:
+          type: string
+          default: updatedAt
+      - name: sortOrder
+        in: query
+        required: false
+        schema:
+          type: string
+          default: DESC
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceProviderPagedModel'
+        '400':
+          description: Invalid request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+    delete:
+      tags:
+      - Service Provider
+      summary: Delete all service providers
+      operationId: deleteAllServiceProviders
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+  /api/v1/serviceproviders/search:
+    get:
+      tags:
+      - Service Provider
+      summary: Search service providers
+      operationId: searchServiceProviders
+      parameters:
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: infoTypeId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: infoGroupId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: classificationId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: sortBy
+        in: query
+        required: false
+        schema:
+          type: string
+          default: updatedAt
+      - name: sortOrder
+        in: query
+        required: false
+        schema:
+          type: string
+          default: DESC
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceProviderPagedModel'
+components:
+  schemas:
+    ServiceProviderPagedModel:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceProvider'
+        page:
+          $ref: components.yaml#/components/schemas/PageMetadata
+    ProblemDetail:
+      $ref: components.yaml#/components/schemas/ProblemDetail
+    ServiceProvider:
+      $ref: components.yaml#/components/schemas/ServiceProvider

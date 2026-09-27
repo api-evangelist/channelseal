@@ -1,0 +1,61 @@
+openapi: 3.2.0
+info:
+  title: Platform Summary Discovery Metrics API
+  description: APIs for platform resources including alerts, applications, NHIs, channels, service providers, etc.
+  version: 0.1.0
+  contact:
+    email: support@channelseal.com
+servers:
+- url: https://api.channelseal.com/platform
+  description: prod server
+- url: https://uat.channelseal.com/platform
+  description: uat server
+- url: https://staging.channelseal.com/platform
+  description: staging server
+tags:
+- name: Summary Discovery Metrics
+paths:
+  /api/v1/dashboard/discovered:
+    get:
+      tags:
+      - Summary Discovery Metrics
+      summary: Get all metrics for portal dashboard
+      operationId: getDiscoveredMetrics
+      parameters:
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: to
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedModel'
+        '400':
+          description: Invalid request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '500':
+          description: Internal server error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+components:
+  schemas:
+    ProblemDetail:
+      $ref: components.yaml#/components/schemas/ProblemDetail
+    PagedModel:
+      $ref: components.yaml#/components/schemas/PagedModel

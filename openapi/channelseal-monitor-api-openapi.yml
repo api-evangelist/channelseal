@@ -1,0 +1,211 @@
+openapi: 3.2.0
+info:
+  title: Channelseal Monitor API
+  version: 0.1.0
+  contact:
+    email: support@channelseal.com
+  description: 'Operations tagged Monitor across 2 of this provider''s published API definitions: channelseal-api-catalog-api-openapi-original.yml, channelseal-platform-api-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.channelseal.com/catalog
+  description: prod server
+- url: https://uat.channelseal.com/catalog
+  description: uat server
+- url: https://staging.channelseal.com/catalog
+  description: staging server
+- url: https://api.channelseal.com/platform
+  description: prod server
+- url: https://uat.channelseal.com/platform
+  description: uat server
+- url: https://staging.channelseal.com/platform
+  description: staging server
+tags:
+- name: Monitor
+  description: Monitor
+  externalDocs:
+    description: Spring Boot Actuator Web API Documentation
+    url: https://docs.spring.io/spring-boot/docs/current/actuator-api/html/
+paths:
+  /actuator:
+    get:
+      tags:
+      - Monitor
+      summary: Monitor endpoint
+      operationId: links
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: '#/components/schemas/Link'
+            application/vnd.spring-boot.actuator.v2+json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: '#/components/schemas/Link'
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    $ref: '#/components/schemas/Link'
+    servers:
+    - url: https://api.channelseal.com/catalog
+      description: prod server
+    - url: https://uat.channelseal.com/catalog
+      description: uat server
+    - url: https://staging.channelseal.com/catalog
+      description: staging server
+  /actuator/health:
+    get:
+      tags:
+      - Monitor
+      summary: Monitor 'health' endpoint
+      operationId: health
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema: {}
+            application/vnd.spring-boot.actuator.v2+json:
+              schema: {}
+            application/json:
+              schema: {}
+    servers:
+    - url: https://api.channelseal.com/catalog
+      description: prod server
+    - url: https://uat.channelseal.com/catalog
+      description: uat server
+    - url: https://staging.channelseal.com/catalog
+      description: staging server
+  /actuator/prometheus:
+    get:
+      tags:
+      - Monitor
+      summary: Monitor endpoint 'prometheus'
+      operationId: scrape
+      x-internal: true
+      parameters:
+      - name: format
+        in: query
+        schema:
+          type: string
+          enum:
+          - CONTENT_TYPE_004
+          - CONTENT_TYPE_OPENMETRICS_100
+          - CONTENT_TYPE_PROTOBUF
+      - name: includedNames
+        in: query
+        schema: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain;version=0.0.4;charset=utf-8:
+              schema: {}
+            application/openmetrics-text;version=1.0.0;charset=utf-8:
+              schema: {}
+            application/vnd.google.protobuf;proto=io.prometheus.client.MetricFamily;encoding=delimited:
+              schema: {}
+    servers:
+    - url: https://api.channelseal.com/platform
+      description: prod server
+    - url: https://uat.channelseal.com/platform
+      description: uat server
+    - url: https://staging.channelseal.com/platform
+      description: staging server
+  /actuator/metrics:
+    get:
+      tags:
+      - Monitor
+      summary: Monitor endpoint 'metrics'
+      operationId: listNames
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema: {}
+            application/vnd.spring-boot.actuator.v2+json:
+              schema: {}
+            application/json:
+              schema: {}
+    servers:
+    - url: https://api.channelseal.com/platform
+      description: prod server
+    - url: https://uat.channelseal.com/platform
+      description: uat server
+    - url: https://staging.channelseal.com/platform
+      description: staging server
+  /actuator/metrics/{requiredMetricName}:
+    get:
+      tags:
+      - Monitor
+      summary: Monitor endpoint 'metrics-requiredMetricName'
+      operationId: metric
+      parameters:
+      - name: requiredMetricName
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tag
+        in: query
+        schema: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema: {}
+            application/vnd.spring-boot.actuator.v2+json:
+              schema: {}
+            application/json:
+              schema: {}
+        '404':
+          description: Not Found
+    servers:
+    - url: https://api.channelseal.com/platform
+      description: prod server
+    - url: https://uat.channelseal.com/platform
+      description: uat server
+    - url: https://staging.channelseal.com/platform
+      description: staging server
+  /actuator/info:
+    get:
+      tags:
+      - Monitor
+      summary: Monitor endpoint 'info'
+      operationId: info
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.spring-boot.actuator.v3+json:
+              schema: {}
+            application/vnd.spring-boot.actuator.v2+json:
+              schema: {}
+            application/json:
+              schema: {}
+    servers:
+    - url: https://api.channelseal.com/platform
+      description: prod server
+    - url: https://uat.channelseal.com/platform
+      description: uat server
+    - url: https://staging.channelseal.com/platform
+      description: staging server
+components:
+  schemas:
+    Link:
+      $ref: components.yaml#/components/schemas/Link
+x-refined-from:
+- channelseal-api-catalog-api-openapi-original.yml
+- channelseal-platform-api-openapi-original.yml

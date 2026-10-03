@@ -222,10 +222,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDetail'
 components:
   schemas:
-    ProblemDetail:
-      $ref: components.yaml#/components/schemas/ProblemDetail
-    Service:
-      $ref: components.yaml#/components/schemas/Service
     ServicePagedModel:
       type: object
       properties:
@@ -235,3 +231,7 @@ components:
             $ref: '#/components/schemas/Service'
         page:
           $ref: components.yaml#/components/schemas/PageMetadata
+    Service:
+      $ref: components.yaml#/components/schemas/Service
+    ProblemDetail:
+      $ref: components.yaml#/components/schemas/ProblemDetail

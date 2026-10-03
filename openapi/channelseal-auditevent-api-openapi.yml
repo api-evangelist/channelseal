@@ -216,8 +216,6 @@ components:
   schemas:
     ProblemDetail:
       $ref: components.yaml#/components/schemas/ProblemDetail
-    ChannelsealEvent:
-      $ref: components.yaml#/components/schemas/ChannelsealEvent
     ChannelsealEventPagedModel:
       type: object
       properties:
@@ -227,3 +225,5 @@ components:
             $ref: '#/components/schemas/ChannelsealEvent'
         page:
           $ref: components.yaml#/components/schemas/PageMetadata
+    ChannelsealEvent:
+      $ref: components.yaml#/components/schemas/ChannelsealEvent

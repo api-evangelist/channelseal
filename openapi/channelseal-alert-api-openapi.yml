@@ -221,12 +221,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDetail'
 components:
   schemas:
-    Alert:
-      $ref: components.yaml#/components/schemas/Alert
-    Pageable:
-      $ref: components.yaml#/components/schemas/Pageable
-    ProblemDetail:
-      $ref: components.yaml#/components/schemas/ProblemDetail
     AlertPagedModel:
       type: object
       properties:
@@ -236,3 +230,9 @@ components:
             $ref: '#/components/schemas/Alert'
         page:
           $ref: components.yaml#/components/schemas/PageMetadata
+    Pageable:
+      $ref: components.yaml#/components/schemas/Pageable
+    ProblemDetail:
+      $ref: components.yaml#/components/schemas/ProblemDetail
+    Alert:
+      $ref: components.yaml#/components/schemas/Alert

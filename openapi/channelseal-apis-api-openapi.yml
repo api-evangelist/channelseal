@@ -322,6 +322,8 @@ paths:
                 $ref: '#/components/schemas/ProblemDetail'
 components:
   schemas:
+    ProblemDetail:
+      $ref: components.yaml#/components/schemas/ProblemDetail
     ApiPagedModel:
       type: object
       properties:
@@ -331,7 +333,5 @@ components:
             $ref: '#/components/schemas/Api'
         page:
           $ref: components.yaml#/components/schemas/PageMetadata
-    ProblemDetail:
-      $ref: components.yaml#/components/schemas/ProblemDetail
     Api:
       $ref: components.yaml#/components/schemas/Api

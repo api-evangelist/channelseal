@@ -343,7 +343,7 @@ components:
             $ref: '#/components/schemas/SensitiveDataElement'
         page:
           $ref: components.yaml#/components/schemas/PageMetadata
-    ProblemDetail:
-      $ref: components.yaml#/components/schemas/ProblemDetail
     SensitiveDataElement:
       $ref: components.yaml#/components/schemas/SensitiveDataElement
+    ProblemDetail:
+      $ref: components.yaml#/components/schemas/ProblemDetail

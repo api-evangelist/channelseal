@@ -342,21 +342,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDetail'
 components:
   schemas:
-    NonHumanIdentity:
-      $ref: components.yaml#/components/schemas/NonHumanIdentity
-    ApplicationPagedModel:
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/Application'
-        page:
-          $ref: components.yaml#/components/schemas/PageMetadata
-    Application:
-      $ref: components.yaml#/components/schemas/Application
-    ProblemDetail:
-      $ref: components.yaml#/components/schemas/ProblemDetail
     NonHumanIdentityPagedModel:
       type: object
       properties:
@@ -364,5 +349,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NonHumanIdentity'
+        page:
+          $ref: components.yaml#/components/schemas/PageMetadata
+    NonHumanIdentity:
+      $ref: components.yaml#/components/schemas/NonHumanIdentity
+    Application:
+      $ref: components.yaml#/components/schemas/Application
+    ProblemDetail:
+      $ref: components.yaml#/components/schemas/ProblemDetail
+    ApplicationPagedModel:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
         page:
           $ref: components.yaml#/components/schemas/PageMetadata

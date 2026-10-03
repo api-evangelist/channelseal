@@ -254,8 +254,6 @@ components:
   schemas:
     ProblemDetail:
       $ref: components.yaml#/components/schemas/ProblemDetail
-    SensitiveInfoGroup:
-      $ref: components.yaml#/components/schemas/SensitiveInfoGroup
     SensitiveInfoGroupPagedModel:
       type: object
       properties:
@@ -265,3 +263,5 @@ components:
             $ref: '#/components/schemas/SensitiveInfoGroup'
         page:
           $ref: components.yaml#/components/schemas/PageMetadata
+    SensitiveInfoGroup:
+      $ref: components.yaml#/components/schemas/SensitiveInfoGroup

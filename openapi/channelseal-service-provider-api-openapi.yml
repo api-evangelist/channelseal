@@ -286,6 +286,10 @@ paths:
                 $ref: '#/components/schemas/ServiceProviderPagedModel'
 components:
   schemas:
+    ProblemDetail:
+      $ref: components.yaml#/components/schemas/ProblemDetail
+    ServiceProvider:
+      $ref: components.yaml#/components/schemas/ServiceProvider
     ServiceProviderPagedModel:
       type: object
       properties:
@@ -295,7 +299,3 @@ components:
             $ref: '#/components/schemas/ServiceProvider'
         page:
           $ref: components.yaml#/components/schemas/PageMetadata
-    ProblemDetail:
-      $ref: components.yaml#/components/schemas/ProblemDetail
-    ServiceProvider:
-      $ref: components.yaml#/components/schemas/ServiceProvider

@@ -23,9 +23,7 @@
     "channelseal-service-provider-api-openapi.yml",
     "channelseal-summary-discovery-metrics-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 3 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -43,13 +41,23 @@
     "channelseal-platform-api-openapi-original.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "channelseal-platform-api-openapi-original.yml: declared missing tag: Summary Discovery Metrics",
     "tag 'Monitor' spans 2 source specs (channelseal-api-catalog-api-openapi-original.yml, channelseal-platform-api-openapi-original.yml): per-path servers applied",
-    "superseded outputs removed: channelseal-api-discovery-service-api-openapi.yml, channelseal-data-classification-api-openapi.yml, channelseal-platform-api-openapi.yml",
-    "apis.yml register: written (+14 apis, 15 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
+    "channelseal-alert-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "channelseal-api-catalog-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "channelseal-api-discovery-service-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "channelseal-data-classification-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "channelseal-platform-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+    "channelseal-apis-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "channelseal-application-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "channelseal-auditevent-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "channelseal-channel-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "channelseal-classification-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "channelseal-monitor-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "channelseal-non-human-identity-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "channelseal-sensitive-data-element-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "channelseal-sensitive-info-group-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "channelseal-sensitive-info-type-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "channelseal-service-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "channelseal-service-provider-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "channelseal-summary-discovery-metrics-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }
